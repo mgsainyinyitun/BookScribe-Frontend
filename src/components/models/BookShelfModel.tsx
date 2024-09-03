@@ -6,6 +6,8 @@ import { useFrame, useThree } from '@react-three/fiber';
 import { Group, PerspectiveCamera } from 'three';
 import { POSITION } from '../../constants/BookShelfConstant';
 import StorageModel from './StorageModel';
+import BookModel from './BookModel';
+import Book from '../../objects/Book';
 
 const bookshelf = new BookShelf();
 
@@ -23,6 +25,8 @@ const BookShelfModel: FC<bookshelfProps> = ({ currentState, toState, setCurrentS
     const bookRef = useRef<Group>(null);
     bookshelf.setRef(bookRef);
     bookshelf.setCamera(camera as PerspectiveCamera);
+
+    const mod_nodes = nodes as any;
 
     useFrame(() => {
         if (currentState !== toState) {
@@ -46,13 +50,13 @@ const BookShelfModel: FC<bookshelfProps> = ({ currentState, toState, setCurrentS
             <mesh
                 castShadow
                 receiveShadow
-                geometry={nodes.Plane003_Plane005.geometry}
+                geometry={mod_nodes.Plane003_Plane005.geometry}
                 material={materials.metal}
             />
             <mesh
                 castShadow
                 receiveShadow
-                geometry={nodes.Plane003_Plane005_1.geometry}
+                geometry={mod_nodes.Plane003_Plane005_1.geometry}
                 material={materials.wood_white}
             />
             <mesh position={[0.21, 1.24, 0]}>
@@ -60,6 +64,7 @@ const BookShelfModel: FC<bookshelfProps> = ({ currentState, toState, setCurrentS
                     onClickFun={() => setToState(POSITION.UP_SHELF)}
                     currentState={currentState}
                     toState={toState}
+                    books={[]}
                 />
             </mesh>
             <mesh position={[0.21, 0.72, 0]}>
@@ -67,6 +72,7 @@ const BookShelfModel: FC<bookshelfProps> = ({ currentState, toState, setCurrentS
                     onClickFun={() => setToState(POSITION.CENTET_SHELF)}
                     currentState={currentState}
                     toState={toState}
+                    books={[new Book(), new Book()]}
                 />
             </mesh>
             <mesh position={[0.21, 0.2, 0]}>
@@ -74,6 +80,7 @@ const BookShelfModel: FC<bookshelfProps> = ({ currentState, toState, setCurrentS
                     onClickFun={() => setToState(POSITION.LOW_SHELF)}
                     currentState={currentState}
                     toState={toState}
+                    books={[new Book()]}
                 />
             </mesh>
         </group>

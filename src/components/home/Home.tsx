@@ -1,9 +1,11 @@
 import { Canvas } from '@react-three/fiber'
-import { FC, useEffect, useRef, useState } from 'react'
+import { FC, useRef, useState } from 'react'
 import BookShelfModel from '../models/BookShelfModel'
 import { OrbitControls } from '@react-three/drei'
 import Control from '../control/Control'
 import { POSITION } from '../../constants/BookShelfConstant'
+import BookModel from '../models/BookModel'
+import Book from '../../objects/Book'
 
 const Home: FC = () => {
 
@@ -15,11 +17,12 @@ const Home: FC = () => {
     return (
         <div className='w-full h-screen'>
             <Canvas
-                className='w-full h-screen border-red-500 border-2'
+                className='w-full h-screen'
                 ref={canvasRef}
                 camera={{
                     far: 1000,
-                    position: [0, 0, 15]
+                    // position: [0, 0, 15]
+                    position: [0, 0, 1]
                 }}
             >
                 <directionalLight intensity={1.5} position={[0, 0, 15]} />
@@ -30,7 +33,8 @@ const Home: FC = () => {
                     setCurrentState={setCurrentState}
                     setToState={setToState}
                 />
-                {/* <OrbitControls enableZoom={false} enablePan={false}/> */}
+                {/* <BookModel book={new Book()}/> */}
+                <OrbitControls/>
             </Canvas>
             <Control controlBtnClick={setToState} currentState={currentState} />
         </div>

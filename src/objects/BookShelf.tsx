@@ -1,7 +1,7 @@
 import { Frustum, Matrix4, PerspectiveCamera, Vector3 } from "three";
 
-
-const original = { x: 0, y: -0.7, z: 13.7 };
+// 13.7
+const original = { x: 0, y: -0.7, z: 0 };
 
 class BookShelf {
     public position: [x: number, y: number, z: number];
@@ -38,7 +38,7 @@ class BookShelf {
     moveToUpperShelf(): boolean {
         // center => [0,-1.25,14.6]
         let isMove = false
-        if (this.bookRef.current.position.z < 14.6) {
+        if (this.bookRef.current.position.z < 0.65) {
             this.bookRef.current.position.z += 0.015;
             isMove = true
         }
@@ -52,7 +52,7 @@ class BookShelf {
     moveToCenterShelf(): boolean {
         // center => [0,-0.7,14.6]
         let isMove = false;
-        if (this.bookRef.current.position.z < 14.6) {
+        if (this.bookRef.current.position.z < 0.65) {
             this.bookRef.current.position.z += 0.015;
             isMove = true
         }
@@ -71,7 +71,7 @@ class BookShelf {
     moveToLowerShelf(): boolean {
         // lower => [0,-0.2,14.6]
         let isMove = false
-        if (this.bookRef.current.position.z < 14.6) {
+        if (this.bookRef.current.position.z < 0.65) {
             this.bookRef.current.position.z += 0.015;
             isMove = true;
         }
