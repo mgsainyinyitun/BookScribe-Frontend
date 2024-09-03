@@ -1,7 +1,7 @@
 import { Frustum, Matrix4, PerspectiveCamera, Vector3 } from "three";
 
 
-const original = {x:0,y:-0.7,z:13.7};
+const original = { x: 0, y: -0.7, z: 13.7 };
 
 class BookShelf {
     public position: [x: number, y: number, z: number];
@@ -17,48 +17,69 @@ class BookShelf {
         this.camera = new PerspectiveCamera();
     }
 
-    moveToOrigin():void{
+    moveToOrigin(): boolean {
         // y = -0.7 (-0.2, -1.25)
-        if(this.bookRef.current.position.z > original.z){
+        let isMove = false;
+        if (this.bookRef.current.position.z > original.z) {
             this.bookRef.current.position.z -= 0.015;
+            isMove = true;
         }
-        if( Math.abs(parseFloat(this.bookRef.current.position.y.toFixed(1))) !== Math.abs(original.y) ){
-            this.bookRef.current.position.y -= 0.015;
+        if (Math.abs(parseFloat(this.bookRef.current.position.y.toFixed(1))) !== Math.abs(original.y)) {
+            if(this.bookRef.current.position.y < original.y) {
+                this.bookRef.current.position.y += 0.015;
+            } else {
+                this.bookRef.current.position.y -= 0.015;
+            }
+            isMove = true;
         }
+        return isMove;
     }
 
-    moveToUpperShelf():void{
+    moveToUpperShelf(): boolean {
         // center => [0,-1.25,14.6]
-        if(this.bookRef.current.position.z < 14.6){
+        let isMove = false
+        if (this.bookRef.current.position.z < 14.6) {
             this.bookRef.current.position.z += 0.015;
+            isMove = true
         }
-        if(this.bookRef.current.position.y > -1.25){
+        if (this.bookRef.current.position.y > -1.25) {
             this.bookRef.current.position.y -= 0.015;
+            isMove = true
         }
+        return isMove;
     }
 
-    moveToCenterShelf():void{
+    moveToCenterShelf(): boolean {
         // center => [0,-0.7,14.6]
-        if(this.bookRef.current.position.z < 14.6){
+        let isMove = false;
+        if (this.bookRef.current.position.z < 14.6) {
             this.bookRef.current.position.z += 0.015;
+            isMove = true
         }
-        if(this.bookRef.current.position.y < -0.7 ){
+        if (this.bookRef.current.position.y < -0.7) {
             this.bookRef.current.position.y += 0.015;
+            isMove = true
         }
-        if(this.bookRef.current.position.y > -0.7 ){
+        if (this.bookRef.current.position.y > -0.7) {
             this.bookRef.current.position.y -= 0.015;
+            isMove = true
         }
+        return isMove;
     }
 
 
-    moveToLowerShelf():void{
+    moveToLowerShelf(): boolean {
         // lower => [0,-0.2,14.6]
-        if(this.bookRef.current.position.z < 14.6){
+        let isMove = false
+        if (this.bookRef.current.position.z < 14.6) {
             this.bookRef.current.position.z += 0.015;
+            isMove = true;
         }
-        if(this.bookRef.current.position.y < -0.2){
+        if (this.bookRef.current.position.y < -0.2) {
             this.bookRef.current.position.y += 0.015;
+            isMove = true;
         }
+        return isMove;
     }
 
     setRef(ref: any): void {
@@ -90,14 +111,14 @@ class BookShelf {
     checkOutOfView(): boolean {
         const frustum = new Frustum();
         const cameraProjectionMatrix = new Matrix4();
-        this.camera.updateMatrixWorld(); 
+        this.camera.updateMatrixWorld();
         cameraProjectionMatrix.multiplyMatrices(this.camera.projectionMatrix, this.camera.matrixWorldInverse);
         frustum.setFromProjectionMatrix(cameraProjectionMatrix);
 
         const meshWorldPosition = new Vector3();
         this.bookRef.current.getWorldPosition(meshWorldPosition);
 
-        const isInFrustum = frustum.containsPoint(meshWorldPosition.addScalar(0.3));   
+        const isInFrustum = frustum.containsPoint(meshWorldPosition.addScalar(0.3));
         return isInFrustum;
     }
 }
