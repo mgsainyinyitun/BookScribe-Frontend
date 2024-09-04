@@ -6,6 +6,7 @@ import { useFrame } from "@react-three/fiber";
 import { BOOK_STATE } from "../../constants/BookConstant";
 import Book from "../../objects/Book";
 import image from "/assets/images/paper_003.jpg";
+import { reference } from "three/webgpu";
 
 interface pageProps {
     page: Page,
@@ -26,9 +27,13 @@ const PageModel: FC<pageProps> = ({ page, index, opened, currentState, book }) =
 
         // let targetRotation = (book.bookState === BOOK_STATE.FRONT && book.openedPage === index) ? -Math.PI : 0;
 
-        let targetRotation = page.calculateOpen(book) ? -Math.PI : 0;
+        let targetRotation = page.calculateOpen(book) ? -Math.PI + (index * 0.007) : 0;
 
         if (pageRef.current) {
+
+            // console.log(ref.current.position.x*index);
+
+
             const bones = ref.current.skeleton.bones;
             bones[0].rotation.y = MathUtils.lerp(
                 bones[0].rotation.y,
@@ -43,48 +48,46 @@ const PageModel: FC<pageProps> = ({ page, index, opened, currentState, book }) =
         return page.skinMesh;
     }, [])
 
-    // useHelper(pageRef as any, SkeletonHelper);
+    useHelper(pageRef as any, SkeletonHelper);
 
 
     useEffect(() => {
         // Create a canvas and get its context
 
         // if (index === 1) {
-            const canvas = document.createElement('canvas');
-            const context = canvas.getContext('2d') as any;
+        const canvas = document.createElement('canvas');
+        const context = canvas.getContext('2d') as any;
 
-            // Set canvas size
-            canvas.width = 800;
-            canvas.height = 1200;
+        // Set canvas size
+        canvas.width = 800;
+        canvas.height = 1200;
 
-            const img = new Image();
-            img.src = "/assets/images/paper_002.jpg";
+        const img = new Image();
+        img.src = "/assets/images/paper_002.jpg";
 
-            img.onload = () => {
-                context.drawImage(img, 0, 0, canvas.width, canvas.height);
+        img.onload = () => {
+            context.drawImage(img, 0, 0, canvas.width, canvas.height);
 
-                // Draw text on canvas
-                context.font = '25px Arial';
-                context.fillStyle = 'red';
-                context.textAlign = 'center';
-                context.textBaseline = 'middle';
+            // Draw text on canvas
+            context.font = '25px Arial';
+            context.fillStyle = 'red';
+            context.textAlign = 'center';
+            context.textBaseline = 'middle';
 
-                console.log(`Page - ${page.pageIndex}`)
+            context.fillText(`Page - ${index}`, canvas.width / 2, canvas.height / 18);
 
-                context.fillText(`Page - ${index}`, canvas.width / 2, canvas.height / 18);
+            // Create a texture from the canvas
+            const texture = new CanvasTexture(canvas);
+            texture.needsUpdate = true;
 
-                // Create a texture from the canvas
-                const texture = new CanvasTexture(canvas);
-                texture.needsUpdate = true;
-
-                // Apply the texture to the material
-                if (pageRef.current) {
-                    const ref = pageRef as any;
-                    ref.current.material[5].map = texture;
-                    ref.current.material[4].map = texture;
-                    ref.current.material[3].map = texture;
-                }
+            // Apply the texture to the material
+            if (pageRef.current) {
+                const ref = pageRef as any;
+                ref.current.material[5].map = texture;
+                ref.current.material[4].map = texture;
+                ref.current.material[3].map = texture;
             }
+        }
         // }
 
     }, []);

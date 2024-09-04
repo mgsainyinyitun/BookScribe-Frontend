@@ -9,7 +9,7 @@ class Book {
     public bookRef: any;
     public pages: Page[] = []
     public numberofPages: number = 0;
-    public openedPage: number =0;
+    public openedPage: number = 15;
     public bookState: string = BOOK_STATE.IN_SHELF;
 
     constructor(noOfPages: number = 20) {
