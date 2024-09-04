@@ -1,4 +1,8 @@
-import { Bone, BoxGeometry, Float32BufferAttribute, MeshStandardMaterial, Skeleton, SkinnedMesh, Uint16BufferAttribute, Vector3 } from "three";
+import { Bone, BoxGeometry, Float32BufferAttribute, MeshStandardMaterial, Skeleton, SkinnedMesh, TextureLoader, Uint16BufferAttribute, Vector3 } from "three";
+import { PAGE_STATE } from "../constants/PageConstant";
+import { useLoader } from "@react-three/fiber";
+import Book from "./Book";
+import { BOOK_STATE } from "../constants/BookConstant";
 
 class Page {
     position: [x: number, y: number, z: number];
@@ -7,22 +11,28 @@ class Page {
     args: [x: number, y: number, z: number]
     geomentry: BoxGeometry;
     skinMesh: SkinnedMesh;
+    pageIndex: number;
+    maxIndex: number;
+    pageRef: any;
 
+    public pageState: string = PAGE_STATE.CLOSE;
+    public paperTexture = useLoader(TextureLoader, '/assets/images/paper_003.jpg');
 
     readonly WIDTH: number;
     readonly HEIGHT: number;
     readonly THICKNESS: number;
     readonly SEGMENTS: number
 
-    constructor() {
+    constructor(idx: number, mIdx: number) {//3.2
         this.position = [-0.11, 0, 0];
-        this.rotation = [-0.1, -0.17, 0]
-        this.scale = [3, 3, 3]
+        this.rotation = [0, Math.PI, 0]
+        this.scale = [1, 1, 1]
         this.args = [0.2, 0.32, 0.001]
         this.WIDTH = 0.2;
         this.HEIGHT = 0.32;
-        this.THICKNESS = 0.001;
-        this.SEGMENTS = 30;
+        this.THICKNESS = 0.0005;
+        // this.THICKNESS = 0.01;
+        this.SEGMENTS = 15;
         this.geomentry = new BoxGeometry(
             this.WIDTH,
             this.HEIGHT,
@@ -30,10 +40,23 @@ class Page {
             this.SEGMENTS,
             2
         );
+        // this.geomentry.translate(0, 0, this.WIDTH/2);
+        this.pageIndex = idx;
+        this.maxIndex = mIdx;
         this.computeSkinIndicesAndWeights();
         this.skinMesh = this.computeSkinnedMesh();
     }
 
+    setPageRef(ref: any) {
+        this.pageRef = ref;
+    }
+
+    calculateOpen(book: Book) {
+        if (book.bookState === BOOK_STATE.FRONT && this.pageIndex <= book.openedPage) {
+            return true;
+        }
+        return false
+    }
 
     computeSkinnedMesh(): SkinnedMesh {
         const bones = [];
@@ -51,13 +74,22 @@ class Page {
         }
         const skeleton = new Skeleton(bones);
         const materials = [
-            new MeshStandardMaterial({ color: 'green' }),
-            new MeshStandardMaterial({ color: 'green' }),
-            new MeshStandardMaterial({ color: 'green' }),
-            new MeshStandardMaterial({ color: 'green' }),
-            new MeshStandardMaterial({ color: 'yellow' }),
-            new MeshStandardMaterial({ color: 'red' }),
+            new MeshStandardMaterial({ color: '#D2b48c' }),
+            new MeshStandardMaterial({ color: '#D2b48c' }),
+            new MeshStandardMaterial({ color: '#D2b48c' }),
+            new MeshStandardMaterial({ color: '#D2b48c' }),
+            new MeshStandardMaterial({
+                color: this.pageIndex === 0 ? 'black' : '#D2b48c',
+                map: this.paperTexture
+            }),
+            new MeshStandardMaterial({
+                color: this.pageIndex === this.maxIndex ? 'cyan' : '#D2b48c',
+                map: this.pageIndex !== this.maxIndex ? this.paperTexture : null
+            }),
+
+
         ]
+
         const mesh = new SkinnedMesh(this.geomentry, materials);
         mesh.castShadow = true;
         mesh.receiveShadow = true;

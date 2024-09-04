@@ -1,8 +1,9 @@
-import { Box, OrbitControls } from '@react-three/drei'
+import { Box } from '@react-three/drei'
 import { FC, useEffect, useRef, useState } from 'react'
 import { POSITION } from '../../constants/BookShelfConstant';
 import BookModel from './BookModel';
 import Book from '../../objects/Book';
+import BookStorage from '../../objects/BookStorage';
 
 interface storageProps {
     onClickFun: () => void,
@@ -11,15 +12,19 @@ interface storageProps {
     books: Book[]
 }
 
-const StorageModel: FC<storageProps> = ({ onClickFun, currentState, books }) => {
+const StorageModel: FC<storageProps> = ({ onClickFun, currentState, toState, books }) => {
     const boxRef = useRef<any>(null);
     const [hover, setHover] = useState(false);
+    const [focusBook,setFocusBook] = useState<Book | null>(null);
 
     useEffect(() => {
         if (boxRef.current) {
             boxRef.current.material.color.set('blue');
         }
     }, [currentState])
+
+
+    const bookStorage = new BookStorage(books);
 
     return (
         <Box
@@ -35,17 +40,20 @@ const StorageModel: FC<storageProps> = ({ onClickFun, currentState, books }) => 
                 transparent={true}
                 opacity={0.25}
             />
-            <group 
-                position={[-1.05,-0.02,0]}
-                rotation={[0,1.6,0]}
-                >
+            <group>
                 {
                     books.map((book, index) => (
                         <mesh
                             key={index}
                         >
-                            <BookModel book={book} />
-                            <OrbitControls />
+                            <BookModel
+                                book={book}
+                                index={index}
+                                currentState={currentState}
+                                toState={toState}
+                                focusedBook={focusBook}
+                                setFocusBook={setFocusBook}
+                            />
                         </mesh>
                     ))
                 }

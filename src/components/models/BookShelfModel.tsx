@@ -6,11 +6,9 @@ import { useFrame, useThree } from '@react-three/fiber';
 import { Group, PerspectiveCamera } from 'three';
 import { POSITION } from '../../constants/BookShelfConstant';
 import StorageModel from './StorageModel';
-import BookModel from './BookModel';
 import Book from '../../objects/Book';
 
 const bookshelf = new BookShelf();
-
 
 interface bookshelfProps {
     currentState: string,
@@ -72,7 +70,7 @@ const BookShelfModel: FC<bookshelfProps> = ({ currentState, toState, setCurrentS
                     onClickFun={() => setToState(POSITION.CENTET_SHELF)}
                     currentState={currentState}
                     toState={toState}
-                    books={[new Book(), new Book()]}
+                    books={[new Book(30),new Book(30)]}
                 />
             </mesh>
             <mesh position={[0.21, 0.2, 0]}>
@@ -80,7 +78,7 @@ const BookShelfModel: FC<bookshelfProps> = ({ currentState, toState, setCurrentS
                     onClickFun={() => setToState(POSITION.LOW_SHELF)}
                     currentState={currentState}
                     toState={toState}
-                    books={[new Book()]}
+                    books={[]}
                 />
             </mesh>
         </group>
