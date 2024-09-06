@@ -4,8 +4,6 @@ import BookShelfModel from '../models/BookShelfModel'
 import { OrbitControls } from '@react-three/drei'
 import Control from '../control/Control'
 import { POSITION } from '../../constants/BookShelfConstant'
-import BookModel from '../models/BookModel'
-import Book from '../../objects/Book'
 
 const Home: FC = () => {
 
@@ -13,7 +11,7 @@ const Home: FC = () => {
     const [toState, setToState] = useState<string>(POSITION.BACK_VIEW);
 
     const canvasRef = useRef<HTMLCanvasElement>(null);
-    
+
     return (
         <div className='w-full h-screen'>
             <Canvas
@@ -33,8 +31,7 @@ const Home: FC = () => {
                     setCurrentState={setCurrentState}
                     setToState={setToState}
                 />
-                {/* <BookModel book={new Book()}/> */}
-                <OrbitControls/>
+                <OrbitControls />
             </Canvas>
             <Control controlBtnClick={setToState} currentState={currentState} />
         </div>

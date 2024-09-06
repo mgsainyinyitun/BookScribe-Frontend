@@ -9,7 +9,7 @@ class Book {
     public bookRef: any;
     public pages: Page[] = []
     public numberofPages: number = 0;
-    public openedPage: number = 15;
+    public openedPage: number = 0;
     public bookState: string = BOOK_STATE.IN_SHELF;
 
     constructor(noOfPages: number = 20) {
@@ -18,6 +18,10 @@ class Book {
         this.scale = [1, 1, 1];
         this.numberofPages = noOfPages;
         this.createPages();
+    }
+
+    setOpenPage(page: number) {
+        this.openedPage = page;
     }
 
     setBookState(state: string) {

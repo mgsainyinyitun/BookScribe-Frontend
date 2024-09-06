@@ -1,4 +1,4 @@
-import { FC, useRef } from 'react'
+import { FC, useEffect, useRef, useState } from 'react'
 import { useGLTF } from '@react-three/drei'
 import shelf from '/assets/3d/book_shelf.glb';
 import BookShelf from '../../objects/BookShelf';
@@ -25,6 +25,12 @@ const BookShelfModel: FC<bookshelfProps> = ({ currentState, toState, setCurrentS
     bookshelf.setCamera(camera as PerspectiveCamera);
 
     const mod_nodes = nodes as any;
+
+    const[storage,setStorage] = useState<Book[]>([new Book(20), new Book(20)]);
+
+    useEffect(()=>{
+        console.log('storage changes ::');
+    },[storage])
 
     useFrame(() => {
         if (currentState !== toState) {
@@ -63,6 +69,7 @@ const BookShelfModel: FC<bookshelfProps> = ({ currentState, toState, setCurrentS
                     currentState={currentState}
                     toState={toState}
                     books={[]}
+                    setStorage={setStorage}
                 />
             </mesh>
             <mesh position={[0.21, 0.72, 0]}>
@@ -70,7 +77,8 @@ const BookShelfModel: FC<bookshelfProps> = ({ currentState, toState, setCurrentS
                     onClickFun={() => setToState(POSITION.CENTET_SHELF)}
                     currentState={currentState}
                     toState={toState}
-                    books={[new Book(30),new Book(30)]}
+                    books={storage}
+                    setStorage={setStorage}
                 />
             </mesh>
             <mesh position={[0.21, 0.2, 0]}>
@@ -79,6 +87,7 @@ const BookShelfModel: FC<bookshelfProps> = ({ currentState, toState, setCurrentS
                     currentState={currentState}
                     toState={toState}
                     books={[]}
+                    setStorage={setStorage}
                 />
             </mesh>
         </group>
