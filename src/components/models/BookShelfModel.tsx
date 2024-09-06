@@ -7,6 +7,7 @@ import { Group, PerspectiveCamera } from 'three';
 import { POSITION } from '../../constants/BookShelfConstant';
 import StorageModel from './StorageModel';
 import Book from '../../objects/Book';
+import { books } from '../../demo/data';
 
 const bookshelf = new BookShelf();
 
@@ -26,11 +27,6 @@ const BookShelfModel: FC<bookshelfProps> = ({ currentState, toState, setCurrentS
 
     const mod_nodes = nodes as any;
 
-    const[storage,setStorage] = useState<Book[]>([new Book(20), new Book(20)]);
-
-    useEffect(()=>{
-        console.log('storage changes ::');
-    },[storage])
 
     useFrame(() => {
         if (currentState !== toState) {
@@ -69,7 +65,6 @@ const BookShelfModel: FC<bookshelfProps> = ({ currentState, toState, setCurrentS
                     currentState={currentState}
                     toState={toState}
                     books={[]}
-                    setStorage={setStorage}
                 />
             </mesh>
             <mesh position={[0.21, 0.72, 0]}>
@@ -77,8 +72,7 @@ const BookShelfModel: FC<bookshelfProps> = ({ currentState, toState, setCurrentS
                     onClickFun={() => setToState(POSITION.CENTET_SHELF)}
                     currentState={currentState}
                     toState={toState}
-                    books={storage}
-                    setStorage={setStorage}
+                    books={[new Book(20,books[1])]}
                 />
             </mesh>
             <mesh position={[0.21, 0.2, 0]}>
@@ -87,7 +81,6 @@ const BookShelfModel: FC<bookshelfProps> = ({ currentState, toState, setCurrentS
                     currentState={currentState}
                     toState={toState}
                     books={[]}
-                    setStorage={setStorage}
                 />
             </mesh>
         </group>

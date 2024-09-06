@@ -3,6 +3,7 @@ import { PAGE_STATE } from "../constants/PageConstant";
 import { useLoader } from "@react-three/fiber";
 import Book from "./Book";
 import { BOOK_STATE } from "../constants/BookConstant";
+import { books } from "../demo/data";
 
 class Page {
     position: [x: number, y: number, z: number];
@@ -14,6 +15,8 @@ class Page {
     pageIndex: number;
     maxIndex: number;
     pageRef: any;
+    fctx: string = '';
+    bctx: string = '';
 
     public pageState: string = PAGE_STATE.CLOSE;
     public paperTexture = useLoader(TextureLoader, '/assets/images/paper_003.jpg');
@@ -50,6 +53,12 @@ class Page {
         this.skinMesh = this.computeSkinnedMesh();
     }
 
+    setCtx(ftxt: string, btxt: string) {
+        this.fctx = ftxt;
+        this.bctx = btxt;
+        this.skinMesh = this.computeSkinnedMesh();
+    }
+
     setPageRef(ref: any) {
         this.pageRef = ref;
     }
@@ -60,6 +69,26 @@ class Page {
         }
         return false
     }
+
+
+    computeMaterials(): MeshStandardMaterial[] {
+        const materials = [
+            new MeshStandardMaterial({ color: '#D2b48c' }),
+            new MeshStandardMaterial({ color: '#D2b48c' }),
+            new MeshStandardMaterial({ color: '#D2b48c' }),
+            new MeshStandardMaterial({ color: '#D2b48c' }),
+            new MeshStandardMaterial({
+                color: this.pageIndex === 0 ? 'black' : '#D2b48c',
+                map: this.pageIndex !== this.maxIndex ? this.createCanvasTexture(`${this.calculatePageNumber().front}`, this.fctx) : null,
+            }),
+            new MeshStandardMaterial({
+                color: this.pageIndex === this.maxIndex ? 'cyan' : '#D2b48c',
+                map: this.pageIndex !== this.maxIndex ? this.createCanvasTexture(`${this.calculatePageNumber().back}`, this.bctx) : null
+            }),
+        ];
+        return materials;
+    }
+
 
 
     computeSkinnedMesh(): SkinnedMesh {
@@ -77,21 +106,7 @@ class Page {
             }
         }
         const skeleton = new Skeleton(bones);
-        const materials = [
-            new MeshStandardMaterial({ color: '#D2b48c' }),
-            new MeshStandardMaterial({ color: '#D2b48c' }),
-            new MeshStandardMaterial({ color: '#D2b48c' }),
-            new MeshStandardMaterial({ color: '#D2b48c' }),
-            new MeshStandardMaterial({
-                color: this.pageIndex === 0 ? 'black' : '#D2b48c',
-                map: this.pageIndex !== this.maxIndex ? this.createCanvasTexture(`${this.calculatePageNumber().front}`, 'Hello Front') : null,
-            }),
-            new MeshStandardMaterial({
-                color: this.pageIndex === this.maxIndex ? 'cyan' : '#D2b48c',
-                map: this.pageIndex !== this.maxIndex ? this.createCanvasTexture(`${this.calculatePageNumber().back}`, 'Hello Back') : null
-            }),
-        ]
-
+        const materials = this.computeMaterials();
         const mesh = new SkinnedMesh(this.geomentry, materials);
         mesh.castShadow = true;
         mesh.receiveShadow = true;
@@ -118,6 +133,7 @@ class Page {
         context.fillRect(0, 0, canvas.width, canvas.height);
 
         this.drawPageNumber(context, canvas, pgNo);
+        this.drawText(context, canvas, text);
 
 
         context.strokeStyle = 'black'; // Border color
@@ -127,12 +143,54 @@ class Page {
         return new CanvasTexture(canvas);
     };
 
+
+    readonly lineSpace: number = 30;
+    readonly initLineY: number = 70;
+    readonly initLeftX: number = 20;
+
+    drawText(context: any, canvas: HTMLCanvasElement, text: string) {
+        context.font = '25px Arial';
+        context.fillStyle = 'black';
+        // context.textAlign = 'justify';
+        // context.fillText(text, canvas.width / 2, this.initLine);
+        // context.fillText(text, canvas.width / 2, this.initLine + this.lineSpace);
+        // let txt = "How much wood would a woodchuck chuck if a woodchuck could chuck wood this is ome thsing if it actual working or not???"
+
+        this.wrapText(context, text, this.initLeftX, this.initLineY, 780, 25);
+
+
+    }
+
+    wrapText(context: any, text: string, x: number, y: number, maxWidth: number, fontSize: number, fontFace?: number) {
+        var words = text.split(' ');
+        var line = '';
+        var lineHeight = fontSize + 2;
+        context.textAlign = 'left';
+        context.font = fontSize + " " + fontFace;
+
+        for (var n = 0; n < words.length; n++) {
+            var testLine = line + words[n] + ' '; // words[1.....n] ; line = ''=>'words[0]
+            var metrics = context.measureText(testLine); // text width
+            var testWidth = metrics.width; // testWidth = width of text
+
+            if (testWidth > maxWidth) { // if wordswidth is greater than maxwidth 
+                context.fillText(line, x, y); // draw the text on x,y
+                line = words[n] + ' '; // line = words[n]
+                y += lineHeight;    // increase line height
+            } else {
+                line = testLine; // line = words[0] + words[1] + ....
+            }
+
+        }
+        context.fillText(line, x, y);
+    }
+
     drawPageNumber(context: any, canvas: HTMLCanvasElement, text: string) {
         context.font = '25px Arial';
         context.fillStyle = 'black';
         context.textAlign = 'center';
         context.textBaseline = 'middle';
-        context.fillText(`- ${text} -`, canvas.width / 2, canvas.height / 18);
+        context.fillText(`- ${text} -`, canvas.width / 2, 20);
     }
 
     computeSkinIndicesAndWeights(): void {

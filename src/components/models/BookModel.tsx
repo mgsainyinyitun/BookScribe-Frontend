@@ -13,10 +13,9 @@ interface bookProps {
     toState: string,
     focusedBook: Book | null,
     setFocusBook: (book: Book | null) => void,
-    setStorage:(books:Book[]) => void,
 }
 
-const BookModel: FC<bookProps> = ({ book, index, currentState, focusedBook, setFocusBook,setStorage }) => {
+const BookModel: FC<bookProps> = ({ book, index, currentState, focusedBook, setFocusBook }) => {
 
     const { camera } = useThree();
     const bookRef = useRef<any>(null);
@@ -32,16 +31,10 @@ const BookModel: FC<bookProps> = ({ book, index, currentState, focusedBook, setF
         console.log('clicking ...')
     }
 
-
     useEffect(() => {
         setOldPosition(bookRef.current.clone());
-    }, [])
-
-
-    useEffect(() => {
         
-    }, [book])
-
+    }, [])
 
     useEffect(() => {
         if (book.bookState === BOOK_STATE.FRONT) {

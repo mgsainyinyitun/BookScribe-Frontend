@@ -11,11 +11,13 @@ class Book {
     public numberofPages: number = 0;
     public openedPage: number = 0;
     public bookState: string = BOOK_STATE.IN_SHELF;
+    public ctx: string[] = [];
 
-    constructor(noOfPages: number = 20) {
+    constructor(noOfPages: number = 20, text: string[]) {
         this.position = [0, 0, 0];
         this.rotation = [0, 0, 0];
         this.scale = [1, 1, 1];
+        this.ctx = text;
         this.numberofPages = noOfPages;
         this.createPages();
     }
@@ -32,9 +34,28 @@ class Book {
         this.bookRef = ref;
     }
 
+
+    // 0,1,2,3,4,5
+
+    // 1 -> 0,1
+    // 2 -> 2,3
+    // 3 -> 4,5
+    // 4 -> 6,7
+    // 5 -> 8,9
+
     createPages() {
-        for (let i = 0; i < this.numberofPages; i++) {
-            this.pages.push(new Page(i, this.numberofPages-1));
+        for (let i = 0; i < this.numberofPages; i++) {  // 0 - 19
+            let tmp = new Page(i, this.numberofPages - 1);
+
+            if (i !== 0 && i !== this.numberofPages - 1) {
+                // tmp.setCtx(,);
+                if ((i - 1) * 2 < this.ctx.length || i + (i - 1) < this.ctx.length) {
+
+                    i + (i - 1) >= this.ctx.length ? tmp.setCtx(this.ctx[(i - 1) * 2], '') :
+                        tmp.setCtx(this.ctx[(i - 1) * 2], this.ctx[i + (i - 1)]);  // 1-> 0; 2-> 2 ; 3-> 4
+                }
+            }
+            this.pages.push(tmp);
         }
     }
 
@@ -64,7 +85,7 @@ class Book {
 
     moveToFrontLocation(camera: Camera): boolean {
         let isMoved = false;
-        const targetRotationY = Math.PI /2  // -1.5
+        const targetRotationY = Math.PI / 2  // -1.5
 
         if (this.bookRef.current.rotation.y < targetRotationY) {
             this.bookRef.current.rotation.y += 0.02;

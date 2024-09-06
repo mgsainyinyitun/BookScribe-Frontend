@@ -9,10 +9,9 @@ interface storageProps {
     currentState: string,
     toState: string,
     books: Book[],
-    setStorage: (books: Book[]) => void,
 }
 
-const StorageModel: FC<storageProps> = ({ onClickFun, currentState, toState, books, setStorage }) => {
+const StorageModel: FC<storageProps> = ({ onClickFun, currentState, toState, books }) => {
     const boxRef = useRef<any>(null);
     const [hover, setHover] = useState(false);
     const [focusBook, setFocusBook] = useState<Book | null>(null);
@@ -22,6 +21,8 @@ const StorageModel: FC<storageProps> = ({ onClickFun, currentState, toState, boo
             boxRef.current.material.color.set('blue');
         }
     }, [currentState])
+
+
 
     return (
         <Box
@@ -50,7 +51,6 @@ const StorageModel: FC<storageProps> = ({ onClickFun, currentState, toState, boo
                                 toState={toState}
                                 focusedBook={focusBook}
                                 setFocusBook={setFocusBook}
-                                setStorage={setStorage}
                             />
                         </mesh>
                     ))

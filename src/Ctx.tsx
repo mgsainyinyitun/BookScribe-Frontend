@@ -16,7 +16,7 @@ export const CtxProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
 
     const [openedPage, setOpenedPage] = useState<number>(0);
     const [bookState, setBookState] = useState<string>(BOOK_STATE.IN_SHELF);
-    const [haveFocusedBook, setHaveFocusedBook] = useState<boolean>(false);
+    const [haveFocusedBook, setHaveFocusedBook] = useState<boolean>(true);
 
     return (
         <Ctx.Provider value={{ openedPage, setOpenedPage, bookState, setBookState, haveFocusedBook, setHaveFocusedBook }}>
