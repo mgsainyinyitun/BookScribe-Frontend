@@ -19,6 +19,7 @@ class BookShelf {
 
     moveToOrigin(): boolean {
         // y = -0.7 (-0.2, -1.25)
+
         let isMove = false;
         if (this.bookRef.current.position.z > original.z) {
             this.bookRef.current.position.z -= 0.015;

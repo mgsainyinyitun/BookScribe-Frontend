@@ -1,31 +1,34 @@
 import { Canvas } from '@react-three/fiber'
 import { FC, useRef, useState } from 'react'
 import BookShelfModel from '../models/BookShelfModel'
-import { OrbitControls, Sky } from '@react-three/drei'
+import { OrbitControls, OrthographicCamera, PerspectiveCamera, Sky } from '@react-three/drei'
 import Controls from '../control/Controls'
 import { POSITION } from '../../constants/BookShelfConstant'
 import TextEditor from '../editor/TextEditor'
-
+import { Camera } from 'three'
 const Home: FC = () => {
 
     const [currentState, setCurrentState] = useState<string>(POSITION.BACK_VIEW);
     const [toState, setToState] = useState<string>(POSITION.BACK_VIEW);
     const [visible, setVisible] = useState(false);
 
-
     const canvasRef = useRef<HTMLCanvasElement>(null);
+    const cameraRef = useRef();
 
     return (
         <div className='w-full h-screen'>
             <Canvas
                 className='w-full h-screen'
                 ref={canvasRef}
-                camera={{
-                    far: 1000,
-                    // position: [0, 0, 15]
-                    position: [0, 0, 1]
-                }}
+            // camera={{
+            //     far: 1000,
+            //     // position: [0, 0, 15]
+            //     position: [0, 0, 1],
+
+            // }}
             >
+                <PerspectiveCamera ref={cameraRef as any} position={[0, 0, 1]} makeDefault far={1000} zoom={0.55} />
+
                 <Sky
                     distance={450000}
                     sunPosition={[1, 1, 1]}
@@ -39,6 +42,7 @@ const Home: FC = () => {
                     toState={toState}
                     setCurrentState={setCurrentState}
                     setToState={setToState}
+                    cameraRef={cameraRef}
                 />
                 <OrbitControls />
             </Canvas>

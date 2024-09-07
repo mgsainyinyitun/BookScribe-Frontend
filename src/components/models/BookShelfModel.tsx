@@ -15,9 +15,10 @@ interface bookshelfProps {
     toState: string,
     setCurrentState: (arg: string) => void,
     setToState: (arg: string) => void,
+    cameraRef: any,
 }
 
-const BookShelfModel: FC<bookshelfProps> = ({ currentState, toState, setCurrentState, setToState }) => {
+const BookShelfModel: FC<bookshelfProps> = ({ currentState, toState, setCurrentState, setToState, cameraRef }) => {
     const { camera } = useThree();
     const { nodes, materials } = useGLTF(shelf)
     const bookRef = useRef<Group>(null);
@@ -29,8 +30,51 @@ const BookShelfModel: FC<bookshelfProps> = ({ currentState, toState, setCurrentS
     const mod_nodes = nodes as any;
 
 
+
+    const setCameraToOrigin = (): boolean => {
+
+        // console.log(cameraRef.current.position);
+
+        // cameraRef.current.position.set(0, 0, 1);
+
+        // cameraRef.current.position.setX(0);
+        // cameraRef.current.position.setY(0);
+        // cameraRef.current.position.setZ(1);
+        let isCamMoved = false;
+
+        if (Math.abs(cameraRef.current.position.x) > 0.001) {
+            let x = cameraRef.current.position.x;
+            Math.abs(cameraRef.current.position.x) < 0.01 ? cameraRef.current.position.setX(0) :
+                cameraRef.current.position.setX(Math.sign(x) * (Math.abs(x) - 0.01));
+            isCamMoved = true;
+        }
+
+        if (Math.abs(cameraRef.current.position.y) > 0.001) {
+            let y = cameraRef.current.position.y;
+            Math.abs(cameraRef.current.position.y) < 0.01 ? cameraRef.current.position.setY(0) :
+                cameraRef.current.position.setY(Math.sign(y) * (Math.abs(y) - 0.01));
+            isCamMoved = true;
+        }
+
+
+        if (!(Math.abs(cameraRef.current.position.z) < 1.001 && Math.abs(cameraRef.current.position.z) > 0.999)) {
+            let z = cameraRef.current.position.z;
+            if (z < 1) {
+                // Move y towards 1, but don't overshoot
+                cameraRef.current.position.setZ(Math.min(z + 0.01, 1));
+            } else {
+                // Move y towards 1, but don't undershoot
+                cameraRef.current.position.setZ(Math.max(z - 0.01, 1));
+            }
+            isCamMoved = true;
+        }
+        return isCamMoved;
+    }
+
+
     useFrame(() => {
         if (currentState !== toState) {
+            if (setCameraToOrigin()) return;
             switch (toState) {
                 case POSITION.BACK_VIEW: (bookshelf.moveToOrigin() || setCurrentState(toState)); break;
                 case POSITION.CENTET_SHELF: (bookshelf.moveToCenterShelf() || setCurrentState(toState)); break;
@@ -39,6 +83,7 @@ const BookShelfModel: FC<bookshelfProps> = ({ currentState, toState, setCurrentS
                 default: break;
             }
         }
+
     })
 
     return (
