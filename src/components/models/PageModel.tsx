@@ -1,10 +1,11 @@
-import { FC, useEffect, useMemo, useRef } from "react"
+import { FC, useEffect, useMemo, useRef, useState } from "react"
 import Page from "../../objects/Page"
-import { Box3, MathUtils, SkeletonHelper, Vector3 } from "three";
+import { Box3, MathUtils, MeshStandardMaterial, SkeletonHelper, SkinnedMesh, Vector3 } from "three";
 import { useHelper } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
 import Book from "../../objects/Book";
 import { degToRad } from "three/src/math/MathUtils.js";
+import { useCtx } from "../../Ctx";
 interface pageProps {
     page: Page,
     index: number,
@@ -16,6 +17,7 @@ interface pageProps {
 
 const PageModel: FC<pageProps> = ({ page, index, book }) => {
     const pageRef = useRef();
+    const { focusedBook, focusedFrontPage, focusedBackPage } = useCtx();
     page.setPageRef(pageRef);
 
     useFrame(() => {
@@ -37,7 +39,6 @@ const PageModel: FC<pageProps> = ({ page, index, book }) => {
             } else {
                 ref.current.position.z = index * page.THICKNESS;
             }
-
         }
 
     })
@@ -55,6 +56,23 @@ const PageModel: FC<pageProps> = ({ page, index, book }) => {
         box.getSize(size);
 
     }, [pageRef])
+
+    useEffect(() => {
+        if (focusedBook === book && focusedFrontPage) {
+            if (focusedFrontPage.pageIndex === page.pageIndex) {
+                skinMesh.material = page.updateFrontMaterials(skinMesh.material as MeshStandardMaterial[], focusedFrontPage.bctx)
+            }
+        }
+    }, [focusedFrontPage]);
+
+
+    useEffect(() => {
+        if (focusedBook === book && focusedBackPage) {
+            if (focusedBackPage.pageIndex === page.pageIndex) {
+                skinMesh.material = page.updateBackMaterials(skinMesh.material as MeshStandardMaterial[], focusedBackPage.fctx)
+            }
+        }
+    }, [focusedBackPage]);
 
     return (
         <primitive

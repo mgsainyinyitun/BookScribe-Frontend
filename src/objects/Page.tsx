@@ -3,7 +3,6 @@ import { PAGE_STATE } from "../constants/PageConstant";
 import { useLoader } from "@react-three/fiber";
 import Book from "./Book";
 import { BOOK_STATE } from "../constants/BookConstant";
-import { books } from "../demo/data";
 
 class Page {
     position: [x: number, y: number, z: number];
@@ -26,6 +25,11 @@ class Page {
     readonly THICKNESS: number;
     readonly SEGMENTS: number
     readonly SEGMENT_WIDTH: number;
+
+
+    shallowClone(): Page {
+        return Object.assign(Object.create(Object.getPrototypeOf(this)), this);
+    }
 
     constructor(idx: number, mIdx: number) {//3.2
         this.position = [-0.11, 0, 0];
@@ -59,6 +63,15 @@ class Page {
         this.skinMesh = this.computeSkinnedMesh();
     }
 
+    setFrontCtx(ftxt: string) {
+        this.fctx = ftxt;
+    }
+
+
+    setBackCtx(btxt: string) {
+        this.bctx = btxt;
+    }
+
     setPageRef(ref: any) {
         this.pageRef = ref;
     }
@@ -79,16 +92,39 @@ class Page {
             new MeshStandardMaterial({ color: '#D2b48c' }),
             new MeshStandardMaterial({
                 color: this.pageIndex === 0 ? 'black' : '#D2b48c',
-                map: this.pageIndex !== this.maxIndex ? this.createCanvasTexture(`${this.calculatePageNumber().front}`, this.fctx) : null,
+                // map: this.pageIndex !== this.maxIndex ? this.createCanvasTexture(`${this.calculatePageNumber().front}`, this.fctx) : null,
             }),
             new MeshStandardMaterial({
                 color: this.pageIndex === this.maxIndex ? 'cyan' : '#D2b48c',
-                map: this.pageIndex !== this.maxIndex ? this.createCanvasTexture(`${this.calculatePageNumber().back}`, this.bctx) : null
+                // map: this.pageIndex !== this.maxIndex ? this.createCanvasTexture(`${this.calculatePageNumber().back}`, this.bctx) : null
             }),
         ];
         return materials;
     }
 
+
+    updateFrontMaterials(mtrs: MeshStandardMaterial[], text: string): MeshStandardMaterial[] {
+        const material = [
+            mtrs[0], mtrs[1], mtrs[2], mtrs[3], mtrs[4],
+            new MeshStandardMaterial({
+                color: this.pageIndex === this.maxIndex ? 'cyan' : '#D2b48c',
+                map: this.pageIndex !== this.maxIndex ? this.createCanvasTexture(`${this.calculatePageNumber().back}`, text) : null
+            }),
+        ]
+        return material;
+    }
+
+    updateBackMaterials(mtrs: MeshStandardMaterial[], text: string): MeshStandardMaterial[] {
+        const material = [
+            mtrs[0], mtrs[1], mtrs[2], mtrs[3],
+            new MeshStandardMaterial({
+                color: this.pageIndex === this.maxIndex ? 'cyan' : '#D2b48c',
+                map: this.pageIndex !== this.maxIndex ? this.createCanvasTexture(`${this.calculatePageNumber().front}`, text) : null
+            }),
+            mtrs[5],
+        ]
+        return material;
+    }
 
 
     computeSkinnedMesh(): SkinnedMesh {
@@ -148,7 +184,7 @@ class Page {
     readonly initLineY: number = 70;
     readonly initLeftX: number = 20;
 
-    drawText(context: any,text: string) {
+    drawText(context: any, text: string) {
         context.font = '25px Arial';
         context.fillStyle = 'black';
         // context.textAlign = 'justify';
