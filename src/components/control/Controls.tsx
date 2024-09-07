@@ -20,6 +20,16 @@ const Controls: FC<controlProps> = ({ controlBtnClick, currentState }) => {
             setOpenedPage(openedPage - 1);
         }
     }
+
+    const handleNextClick = () => {
+        if (focusedBook) {
+            if (openedPage >= focusedBook.pages.length) {
+                setOpenedPage(0);
+            } else {
+                setOpenedPage(openedPage + 1);
+            }
+        }
+    }
     return (
         <>
             <div className={`w-full h-20 fixed bottom-1/2 right-0 flex justify-between px-10 items-center 
@@ -31,7 +41,7 @@ const Controls: FC<controlProps> = ({ controlBtnClick, currentState }) => {
                     <FontAwesomeIcon icon={faCaretLeft} />
                 </button>
                 <button
-                    onClick={() => setOpenedPage(openedPage + 1)}
+                    onClick={handleNextClick}
                     className={`w-12 h-12 bg-blue-500 text-white rounded-full flex items-center justify-center shadow-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-300 ${currentState === POSITION.CENTET_SHELF ? 'bg-violet-500' : ''}`}>
                     <FontAwesomeIcon icon={faCaretRight} />
                 </button>

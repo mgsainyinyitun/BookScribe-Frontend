@@ -32,6 +32,7 @@ const TextEditor: FC<textEditorProps> = ({ visible, setVisible }) => {
     }
 
     const onChangeSave = () => {
+
         if (isFrontChanged && focusedBook && !isBackChanged) {
             focusedBook.pages[openedPage].setBackCtx(frontCtx);
             setFocusFrontPage(focusedBook.pages[openedPage].shallowClone());
@@ -49,12 +50,12 @@ const TextEditor: FC<textEditorProps> = ({ visible, setVisible }) => {
     }
 
     useEffect(() => {
-        if (focusedBook !== null) {
+        if (focusedBook !== null && openedPage < focusedBook.pages.length) {
             setFocusFrontPage(focusedBook.pages[openedPage]);
             setFocusBackPage(focusedBook.pages[openedPage + 1]);
 
-            setFrontCtx(focusedBook.pages[openedPage].bctx);
-            setBackCtx(focusedBook.pages[openedPage + 1].fctx);
+            setFrontCtx(focusedBook.pages[openedPage].bctx ? focusedBook.pages[openedPage].bctx : '');
+            setBackCtx(focusedBook.pages[openedPage + 1] ? focusedBook.pages[openedPage + 1].fctx : '');
         } else {
             setFocusFrontPage(null);
             setFocusBackPage(null);

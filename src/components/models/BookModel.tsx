@@ -35,8 +35,8 @@ const BookModel: FC<bookProps> = ({ book, index, currentState }) => {
 
     useEffect(() => {
         if (book.bookState === BOOK_STATE.FRONT) {
-            if (openedPage > book.pages.length) {
-                setOpenedPage(book.pages.length);
+            if (openedPage >= book.pages.length) {
+                setOpenedPage(0);
             }
             iBook.setOpenPage(openedPage);
             setIBook(iBook);
