@@ -6,8 +6,7 @@ import { useFrame, useThree } from '@react-three/fiber';
 import { Group, PerspectiveCamera } from 'three';
 import { POSITION } from '../../constants/BookShelfConstant';
 import StorageModel from './StorageModel';
-import Book from '../../objects/Book';
-import { books } from '../../demo/data';
+import { useCtx } from '../../Ctx';
 
 const bookshelf = new BookShelf();
 
@@ -22,6 +21,8 @@ const BookShelfModel: FC<bookshelfProps> = ({ currentState, toState, setCurrentS
     const { camera } = useThree();
     const { nodes, materials } = useGLTF(shelf)
     const bookRef = useRef<Group>(null);
+    const { booStorage } = useCtx();
+
     bookshelf.setRef(bookRef);
     bookshelf.setCamera(camera as PerspectiveCamera);
 
@@ -72,7 +73,7 @@ const BookShelfModel: FC<bookshelfProps> = ({ currentState, toState, setCurrentS
                     onClickFun={() => setToState(POSITION.CENTET_SHELF)}
                     currentState={currentState}
                     toState={toState}
-                    books={[new Book(20,books[1])]}
+                    books={booStorage.filter(book => book.shelfId === 1)}
                 />
             </mesh>
             <mesh position={[0.21, 0.2, 0]}>

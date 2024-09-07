@@ -11,8 +11,7 @@ interface controlProps {
 
 const Control: FC<controlProps> = ({ controlBtnClick, currentState }) => {
 
-    const { openedPage, setOpenedPage } = useCtx();
-    const { haveFocusedBook } = useCtx();
+    const { openedPage, setOpenedPage, focusedBook, setFocusBook } = useCtx();
 
     const handlePreviousClick = () => {
         if (openedPage <= 0) {
@@ -24,7 +23,7 @@ const Control: FC<controlProps> = ({ controlBtnClick, currentState }) => {
     return (
         <>
             <div className={`w-full h-20 fixed bottom-1/2 right-0 flex justify-between px-10 items-center 
-                ${haveFocusedBook ? 'block' : 'hidden'}
+                ${focusedBook !== null ? 'block' : 'hidden'}
                 `}>
                 <button
                     onClick={handlePreviousClick}
@@ -40,25 +39,25 @@ const Control: FC<controlProps> = ({ controlBtnClick, currentState }) => {
 
             <div className='w-full h-20 fixed bottom-0 right-0 flex justify-center items-center gap-2'>
                 <button
-                    onClick={() => controlBtnClick(POSITION.CENTET_SHELF)}
+                    onClick={() => { controlBtnClick(POSITION.CENTET_SHELF); setFocusBook(null) }}
                     className={`w-12 h-12 bg-blue-500 text-white rounded-full flex items-center justify-center shadow-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-300 ${currentState === POSITION.CENTET_SHELF ? 'bg-violet-500' : ''}`}>
                     {POSITION.CENTET_SHELF}
                 </button>
 
                 <button
-                    onClick={() => controlBtnClick(POSITION.UP_SHELF)}
+                    onClick={() => { controlBtnClick(POSITION.UP_SHELF); setFocusBook(null) }}
                     className={`w-12 h-12 bg-blue-500 text-white rounded-full flex items-center justify-center shadow-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-300 ${currentState === POSITION.UP_SHELF ? 'bg-violet-500' : ''}`}>
                     {POSITION.UP_SHELF}
                 </button>
 
                 <button
-                    onClick={() => controlBtnClick(POSITION.LOW_SHELF)}
+                    onClick={() => { controlBtnClick(POSITION.LOW_SHELF); setFocusBook(null) }}
                     className={`w-12 h-12 bg-blue-500 text-white rounded-full flex items-center justify-center shadow-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-300 ${currentState === POSITION.LOW_SHELF ? 'bg-violet-500' : ''}`}>
                     {POSITION.LOW_SHELF}
                 </button>
 
                 <button
-                    onClick={() => controlBtnClick(POSITION.BACK_VIEW)}
+                    onClick={() => { controlBtnClick(POSITION.BACK_VIEW); setFocusBook(null) }}
                     className={`w-12 h-12 bg-blue-500 text-white rounded-full flex items-center justify-center shadow-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-300 ${currentState === POSITION.BACK_VIEW ? 'bg-violet-500' : ''}`}>
                     {POSITION.BACK_VIEW}
                 </button>

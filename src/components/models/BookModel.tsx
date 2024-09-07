@@ -11,11 +11,9 @@ interface bookProps {
     index: number,
     currentState: string,
     toState: string,
-    focusedBook: Book | null,
-    setFocusBook: (book: Book | null) => void,
 }
 
-const BookModel: FC<bookProps> = ({ book, index, currentState, focusedBook, setFocusBook }) => {
+const BookModel: FC<bookProps> = ({ book, index, currentState }) => {
 
     const { camera } = useThree();
     const bookRef = useRef<any>(null);
@@ -23,7 +21,7 @@ const BookModel: FC<bookProps> = ({ book, index, currentState, focusedBook, setF
     const [oldPosition, setOldPosition] = useState<any>(null);
     const [isMoved, setIsMoved] = useState<boolean>(false);
     const [iBook, setIBook] = useState<Book>(book);
-    const { openedPage, setOpenedPage, haveFocusedBook, setHaveFocusedBook } = useCtx();
+    const { openedPage, setOpenedPage, focusedBook, setFocusBook } = useCtx();
 
     function onClickFun(e: any) {
         e.stopPropagation();
@@ -33,7 +31,6 @@ const BookModel: FC<bookProps> = ({ book, index, currentState, focusedBook, setF
 
     useEffect(() => {
         setOldPosition(bookRef.current.clone());
-        
     }, [])
 
     useEffect(() => {

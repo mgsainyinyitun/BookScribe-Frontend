@@ -14,15 +14,12 @@ interface storageProps {
 const StorageModel: FC<storageProps> = ({ onClickFun, currentState, toState, books }) => {
     const boxRef = useRef<any>(null);
     const [hover, setHover] = useState(false);
-    const [focusBook, setFocusBook] = useState<Book | null>(null);
 
     useEffect(() => {
         if (boxRef.current) {
             boxRef.current.material.color.set('blue');
         }
     }, [currentState])
-
-
 
     return (
         <Box
@@ -49,8 +46,6 @@ const StorageModel: FC<storageProps> = ({ onClickFun, currentState, toState, boo
                                 index={index}
                                 currentState={currentState}
                                 toState={toState}
-                                focusedBook={focusBook}
-                                setFocusBook={setFocusBook}
                             />
                         </mesh>
                     ))

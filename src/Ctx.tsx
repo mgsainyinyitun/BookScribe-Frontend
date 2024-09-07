@@ -1,13 +1,18 @@
 import React, { createContext, useContext, useState, ReactNode } from 'react';
-import { BOOK_STATE } from './constants/BookConstant';
+import Book from './objects/Book';
+import { books } from './demo/data';
+
 
 interface ctxProps {
     openedPage: number;
     setOpenedPage: (newState: number) => void;
-    bookState: string;
-    setBookState: (newState: string) => void;
-    haveFocusedBook: boolean;
-    setHaveFocusedBook: (newState: boolean) => void;
+
+    booStorage: Book[],
+    updateBookStorage: (newState: Book[]) => void;
+
+    focusedBook: Book | null,
+    setFocusBook: (newState: Book | null) => void;
+
 }
 
 const Ctx = createContext<ctxProps | undefined>(undefined);
@@ -15,11 +20,11 @@ const Ctx = createContext<ctxProps | undefined>(undefined);
 export const CtxProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
 
     const [openedPage, setOpenedPage] = useState<number>(0);
-    const [bookState, setBookState] = useState<string>(BOOK_STATE.IN_SHELF);
-    const [haveFocusedBook, setHaveFocusedBook] = useState<boolean>(true);
+    const [booStorage, updateBookStorage] = useState<Book[]>([new Book(10, books[1]), new Book(10, books[1])]);
+    const [focusedBook, setFocusBook] = useState<Book | null>(null);
 
     return (
-        <Ctx.Provider value={{ openedPage, setOpenedPage, bookState, setBookState, haveFocusedBook, setHaveFocusedBook }}>
+        <Ctx.Provider value={{ openedPage, setOpenedPage, booStorage, updateBookStorage, focusedBook, setFocusBook }}>
             {children}
         </Ctx.Provider>
     );
