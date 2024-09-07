@@ -9,7 +9,7 @@ interface controlProps {
     currentState: string,
 }
 
-const Control: FC<controlProps> = ({ controlBtnClick, currentState }) => {
+const Controls: FC<controlProps> = ({ controlBtnClick, currentState }) => {
 
     const { openedPage, setOpenedPage, focusedBook, setFocusBook } = useCtx();
 
@@ -66,4 +66,4 @@ const Control: FC<controlProps> = ({ controlBtnClick, currentState }) => {
     )
 }
 
-export default Control
+export default Controls

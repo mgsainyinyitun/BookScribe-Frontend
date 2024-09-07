@@ -133,7 +133,7 @@ class Page {
         context.fillRect(0, 0, canvas.width, canvas.height);
 
         this.drawPageNumber(context, canvas, pgNo);
-        this.drawText(context, canvas, text);
+        this.drawText(context, text);
 
 
         context.strokeStyle = 'black'; // Border color
@@ -148,7 +148,7 @@ class Page {
     readonly initLineY: number = 70;
     readonly initLeftX: number = 20;
 
-    drawText(context: any, canvas: HTMLCanvasElement, text: string) {
+    drawText(context: any,text: string) {
         context.font = '25px Arial';
         context.fillStyle = 'black';
         // context.textAlign = 'justify';

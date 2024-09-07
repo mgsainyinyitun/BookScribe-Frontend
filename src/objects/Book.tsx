@@ -50,9 +50,7 @@ class Book {
             let tmp = new Page(i, this.numberofPages - 1);
 
             if (i !== 0 && i !== this.numberofPages - 1) {
-                // tmp.setCtx(,);
                 if ((i - 1) * 2 < this.ctx.length || i + (i - 1) < this.ctx.length) {
-
                     i + (i - 1) >= this.ctx.length ? tmp.setCtx(this.ctx[(i - 1) * 2], '') :
                         tmp.setCtx(this.ctx[(i - 1) * 2], this.ctx[i + (i - 1)]);  // 1-> 0; 2-> 2 ; 3-> 4
                 }

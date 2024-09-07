@@ -1,4 +1,4 @@
-import { FC, useEffect, useMemo, useRef, useState } from "react"
+import { FC, useEffect, useMemo, useRef } from "react"
 import Page from "../../objects/Page"
 import { Box3, MathUtils, SkeletonHelper, Vector3 } from "three";
 import { useHelper } from "@react-three/drei";
@@ -18,7 +18,6 @@ const PageModel: FC<pageProps> = ({ page, index, book }) => {
     const pageRef = useRef();
     page.setPageRef(pageRef);
 
-
     useFrame(() => {
         const ref = pageRef as any
         let targetRotation = page.calculateOpen(book) ? -Math.PI : 0; //+ (index * 0.0001)
@@ -34,14 +33,13 @@ const PageModel: FC<pageProps> = ({ page, index, book }) => {
             );
 
             if (targetRotation !== 0) {
-                // console.log('z:', ref.current.position.z);
-                ref.current.position.z = 0.01;
+                ref.current.position.z = -1 * index * page.THICKNESS;
             } else {
-                // console.log('z:' + page.pageIndex + "=>", ref.current.position.z);
                 ref.current.position.z = index * page.THICKNESS;
             }
 
         }
+
     })
 
     const skinMesh = useMemo(() => {

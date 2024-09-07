@@ -2,7 +2,7 @@ import { Canvas } from '@react-three/fiber'
 import { FC, useRef, useState } from 'react'
 import BookShelfModel from '../models/BookShelfModel'
 import { OrbitControls, Sky } from '@react-three/drei'
-import Control from '../control/Control'
+import Controls from '../control/Controls'
 import { POSITION } from '../../constants/BookShelfConstant'
 import TextEditor from '../editor/TextEditor'
 
@@ -42,7 +42,7 @@ const Home: FC = () => {
                 />
                 <OrbitControls />
             </Canvas>
-            <Control controlBtnClick={setToState} currentState={currentState} />
+            <Controls controlBtnClick={setToState} currentState={currentState} />
             <TextEditor visible={visible} setVisible={setVisible} />
         </div>
     )

@@ -1,4 +1,4 @@
-import { FC, useEffect, useRef, useState } from 'react'
+import { FC, useRef } from 'react'
 import { useGLTF } from '@react-three/drei'
 import shelf from '/assets/3d/book_shelf.glb';
 import BookShelf from '../../objects/BookShelf';

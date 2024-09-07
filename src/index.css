@@ -36,3 +36,28 @@ html, body {
   width: 100%;
   height: 100%;
 }
+
+
+
+.textarea-scrollbar {
+  /* scrollbar-width: thin;
+  scrollbar-color: blue; 
+  scrollbar-base-color: red; */
+}
+
+.textarea-scrollbar::-webkit-scrollbar {
+  width: 1px; /* Width of the scrollbar */
+}
+
+.textarea-scrollbar::-webkit-scrollbar-track {
+  background: #D2b48c; /* Background color of the scrollbar track */
+}
+
+.textarea-scrollbar::-webkit-scrollbar-thumb {
+  background-color: #D2b48c; /* Color of the scrollbar thumb */
+  border-radius: 6px; /* Rounded corners for the scrollbar thumb */
+}
+
+.textarea-scrollbar::-webkit-scrollbar-thumb:hover {
+  background-color: #D2b48c; /* Color of the scrollbar thumb on hover */
+}
