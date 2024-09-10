@@ -6,8 +6,8 @@ import { CtxProvider } from './Ctx'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <CtxProvider>
-      <App />
-    </CtxProvider>
+      <CtxProvider>
+        <App />
+      </CtxProvider>
   </StrictMode>,
 )

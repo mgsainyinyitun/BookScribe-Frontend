@@ -47,6 +47,8 @@ const TextEditor: FC<textEditorProps> = ({ visible, setVisible }) => {
             setFocusBackPage(focusedBook.pages[openedPage + 1].shallowClone())
         }
         setVisible(false);
+        setIsFrontChanged(false);
+        setIsBackChanged(false);
     }
 
     useEffect(() => {
@@ -59,6 +61,8 @@ const TextEditor: FC<textEditorProps> = ({ visible, setVisible }) => {
         } else {
             setFocusFrontPage(null);
             setFocusBackPage(null);
+            setFrontCtx('');
+            setBackCtx('');
         }
     }, [focusedBook, openedPage])
 

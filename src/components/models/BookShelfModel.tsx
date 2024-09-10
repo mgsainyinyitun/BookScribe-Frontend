@@ -1,4 +1,4 @@
-import { FC, useRef } from 'react'
+import { FC, useEffect, useRef } from 'react'
 import { useGLTF } from '@react-three/drei'
 import shelf from '/assets/3d/book_shelf.glb';
 import BookShelf from '../../objects/BookShelf';
@@ -7,6 +7,7 @@ import { Group, PerspectiveCamera } from 'three';
 import { POSITION } from '../../constants/BookShelfConstant';
 import StorageModel from './StorageModel';
 import { useCtx } from '../../Ctx';
+import Book from '../../objects/Book';
 
 const bookshelf = new BookShelf();
 
@@ -22,14 +23,12 @@ const BookShelfModel: FC<bookshelfProps> = ({ currentState, toState, setCurrentS
     const { camera } = useThree();
     const { nodes, materials } = useGLTF(shelf)
     const bookRef = useRef<Group>(null);
-    const { booStorage } = useCtx();
+    const { booStorage,updateBookStorage, bookContents } = useCtx();
 
     bookshelf.setRef(bookRef);
     bookshelf.setCamera(camera as PerspectiveCamera);
 
     const mod_nodes = nodes as any;
-
-
 
     const setCameraToOrigin = (): boolean => {
 
@@ -44,15 +43,15 @@ const BookShelfModel: FC<bookshelfProps> = ({ currentState, toState, setCurrentS
 
         if (Math.abs(cameraRef.current.position.x) > 0.001) {
             let x = cameraRef.current.position.x;
-            Math.abs(cameraRef.current.position.x) < 0.01 ? cameraRef.current.position.setX(0) :
-                cameraRef.current.position.setX(Math.sign(x) * (Math.abs(x) - 0.01));
+            Math.abs(cameraRef.current.position.x) < 0.1 ? cameraRef.current.position.setX(0) :
+                cameraRef.current.position.setX(Math.sign(x) * (Math.abs(x) - 0.1));
             isCamMoved = true;
         }
 
         if (Math.abs(cameraRef.current.position.y) > 0.001) {
             let y = cameraRef.current.position.y;
-            Math.abs(cameraRef.current.position.y) < 0.01 ? cameraRef.current.position.setY(0) :
-                cameraRef.current.position.setY(Math.sign(y) * (Math.abs(y) - 0.01));
+            Math.abs(cameraRef.current.position.y) < 0.1 ? cameraRef.current.position.setY(0) :
+                cameraRef.current.position.setY(Math.sign(y) * (Math.abs(y) - 0.1));
             isCamMoved = true;
         }
 
@@ -61,15 +60,20 @@ const BookShelfModel: FC<bookshelfProps> = ({ currentState, toState, setCurrentS
             let z = cameraRef.current.position.z;
             if (z < 1) {
                 // Move y towards 1, but don't overshoot
-                cameraRef.current.position.setZ(Math.min(z + 0.01, 1));
+                cameraRef.current.position.setZ(Math.min(z + 0.1, 1));
             } else {
                 // Move y towards 1, but don't undershoot
-                cameraRef.current.position.setZ(Math.max(z - 0.01, 1));
+                cameraRef.current.position.setZ(Math.max(z - 0.1, 1));
             }
             isCamMoved = true;
         }
         return isCamMoved;
     }
+
+    useEffect(() => {
+        const a = bookContents.map(ctx => new Book(10, ctx.text))
+        updateBookStorage(a);
+    }, [])
 
 
     useFrame(() => {
@@ -119,6 +123,7 @@ const BookShelfModel: FC<bookshelfProps> = ({ currentState, toState, setCurrentS
                     currentState={currentState}
                     toState={toState}
                     books={booStorage.filter(book => book.shelfId === 1)}
+                    // books={bookContents.map(ctx => new Book(10, ctx.text))}
                 />
             </mesh>
             <mesh position={[0.21, 0.2, 0]}>
