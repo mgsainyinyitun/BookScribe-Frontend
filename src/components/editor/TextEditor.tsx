@@ -6,10 +6,11 @@ import { useCtx } from '../../Ctx';
 interface textEditorProps {
     visible: boolean;
     setVisible: (cond: boolean) => void;
+    setNewBookVisible: (cond: boolean) => void;
 }
 
 
-const TextEditor: FC<textEditorProps> = ({ visible, setVisible }) => {
+const TextEditor: FC<textEditorProps> = ({ visible, setVisible, setNewBookVisible }) => {
 
     const [menuVisible, setMenuVisible] = useState(false);
     const { focusedBook, openedPage, setFocusFrontPage, setFocusBackPage } = useCtx();
@@ -87,7 +88,7 @@ const TextEditor: FC<textEditorProps> = ({ visible, setVisible }) => {
 
 
                             <button
-                                onClick={() => setVisible(!visible)}
+                                onClick={() => setNewBookVisible(true)}
                                 className={`w-12 h-12 bg-blue-800 text-white rounded-full flex items-center justify-center shadow-lg hover:bg-blue-600'}`}>
                                 <FontAwesomeIcon icon={faPlus} />
                             </button>

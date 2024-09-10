@@ -6,11 +6,13 @@ import Controls from '../control/Controls'
 import { POSITION } from '../../constants/BookShelfConstant'
 import TextEditor from '../editor/TextEditor'
 import { Camera } from 'three'
+import NewBook from '../book/NewBook'
 const Home: FC = () => {
 
     const [currentState, setCurrentState] = useState<string>(POSITION.BACK_VIEW);
     const [toState, setToState] = useState<string>(POSITION.BACK_VIEW);
     const [visible, setVisible] = useState(false);
+    const [newBookVisible, setNewBookVisible] = useState(false);
 
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const cameraRef = useRef();
@@ -47,7 +49,8 @@ const Home: FC = () => {
                 <OrbitControls />
             </Canvas>
             <Controls controlBtnClick={setToState} currentState={currentState} />
-            <TextEditor visible={visible} setVisible={setVisible} />
+            <TextEditor visible={visible} setVisible={setVisible} setNewBookVisible={setNewBookVisible}/>
+            <NewBook visible={newBookVisible} setVisible={setNewBookVisible} />
         </div>
     )
 }

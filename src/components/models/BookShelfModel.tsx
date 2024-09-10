@@ -23,7 +23,7 @@ const BookShelfModel: FC<bookshelfProps> = ({ currentState, toState, setCurrentS
     const { camera } = useThree();
     const { nodes, materials } = useGLTF(shelf)
     const bookRef = useRef<Group>(null);
-    const { booStorage,updateBookStorage, bookContents } = useCtx();
+    const { booStorage, updateBookStorage, bookContents } = useCtx();
 
     bookshelf.setRef(bookRef);
     bookshelf.setCamera(camera as PerspectiveCamera);
@@ -73,7 +73,7 @@ const BookShelfModel: FC<bookshelfProps> = ({ currentState, toState, setCurrentS
     useEffect(() => {
         const a = bookContents.map(ctx => new Book(10, ctx.text))
         updateBookStorage(a);
-    }, [])
+    }, [bookContents])
 
 
     useFrame(() => {
@@ -114,7 +114,7 @@ const BookShelfModel: FC<bookshelfProps> = ({ currentState, toState, setCurrentS
                     onClickFun={() => setToState(POSITION.UP_SHELF)}
                     currentState={currentState}
                     toState={toState}
-                    books={[]}
+                    books={booStorage.filter(book => book.shelfId === 1)}
                 />
             </mesh>
             <mesh position={[0.21, 0.72, 0]}>
@@ -122,8 +122,8 @@ const BookShelfModel: FC<bookshelfProps> = ({ currentState, toState, setCurrentS
                     onClickFun={() => setToState(POSITION.CENTET_SHELF)}
                     currentState={currentState}
                     toState={toState}
-                    books={booStorage.filter(book => book.shelfId === 1)}
-                    // books={bookContents.map(ctx => new Book(10, ctx.text))}
+                    books={booStorage.filter(book => book.shelfId === 2)}
+                // books={bookContents.map(ctx => new Book(10, ctx.text))}
                 />
             </mesh>
             <mesh position={[0.21, 0.2, 0]}>
@@ -131,7 +131,7 @@ const BookShelfModel: FC<bookshelfProps> = ({ currentState, toState, setCurrentS
                     onClickFun={() => setToState(POSITION.LOW_SHELF)}
                     currentState={currentState}
                     toState={toState}
-                    books={[]}
+                    books={booStorage.filter(book => book.shelfId === 3)}
                 />
             </mesh>
         </group>
