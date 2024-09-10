@@ -25,7 +25,7 @@ const BookModel: FC<bookProps> = ({ book, index, currentState }) => {
 
     function onClickFun(e: any) {
         e.stopPropagation();
-        currentState !== POSITION.BACK_VIEW && setFocusBook(book);
+        currentState !== POSITION.BACK_VIEW && (setFocusBook(book), setOpenedPage(0));
         console.log('clicking ...')
     }
 
