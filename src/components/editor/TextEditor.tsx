@@ -69,7 +69,7 @@ const TextEditor: FC<textEditorProps> = ({ visible, setVisible, setNewBookVisibl
 
     return (
         <>
-            <div className='absolute top-0 right-0 w-full flex justify-center items-end pr-5 pt-5 z-50 flex-col gap-2'>
+            <div className='absolute top-0 right-0 w-[50%] flex justify-center items-end pr-5 pt-5 z-50 flex-col gap-2'>
                 <button
                     onClick={() => setMenuVisible(!menuVisible)}
                     className={`w-12 h-12 bg-blue-500 text-white rounded-full flex items-center justify-center shadow-lg hover:bg-blue-600 focus:outline-none'}`}>

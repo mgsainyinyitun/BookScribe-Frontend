@@ -7,6 +7,7 @@ import { POSITION } from '../../constants/BookShelfConstant'
 import TextEditor from '../editor/TextEditor'
 import { Camera } from 'three'
 import NewBook from '../book/NewBook'
+import UserMgmt from '../user/UserMgmt'
 const Home: FC = () => {
 
     const [currentState, setCurrentState] = useState<string>(POSITION.BACK_VIEW);
@@ -51,6 +52,7 @@ const Home: FC = () => {
             <Controls controlBtnClick={setToState} currentState={currentState} />
             <TextEditor visible={visible} setVisible={setVisible} setNewBookVisible={setNewBookVisible}/>
             <NewBook visible={newBookVisible} setVisible={setNewBookVisible} />
+            <UserMgmt/>
         </div>
     )
 }

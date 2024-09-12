@@ -4,7 +4,7 @@ import shelf from '/assets/3d/book_shelf.glb';
 import BookShelf from '../../objects/BookShelf';
 import { useFrame, useThree } from '@react-three/fiber';
 import { Group, PerspectiveCamera } from 'three';
-import { POSITION } from '../../constants/BookShelfConstant';
+import { POSITION, SHELF_ID } from '../../constants/BookShelfConstant';
 import StorageModel from './StorageModel';
 import { useCtx } from '../../Ctx';
 import Book from '../../objects/Book';
@@ -71,8 +71,16 @@ const BookShelfModel: FC<bookshelfProps> = ({ currentState, toState, setCurrentS
     }
 
     useEffect(() => {
-        const a = bookContents.map(ctx => new Book(10, ctx.text))
-        updateBookStorage(a);
+        const args = bookContents.map(ctx => {
+            const book = new Book(10, ctx.text);
+            if (SHELF_ID[ctx.shelf]) {
+                book.setShelfId(parseInt(SHELF_ID[ctx.shelf]));
+            } else {
+                book.setShelfId(SHELF_ID.SHELF_UPPER);
+            }
+            return book;
+        })
+        updateBookStorage(args);
     }, [bookContents])
 
 

@@ -21,11 +21,11 @@ const BookModel: FC<bookProps> = ({ book, index, currentState }) => {
     const [oldPosition, setOldPosition] = useState<any>(null);
     const [isMoved, setIsMoved] = useState<boolean>(false);
     const [iBook, setIBook] = useState<Book>(book);
-    const { openedPage, setOpenedPage, focusedBook, setFocusBook } = useCtx();
+    const { openedPage, setOpenedPage, focusedBook, setFocusBook,setFocusBackPage,setFocusFrontPage } = useCtx();
 
     function onClickFun(e: any) {
         e.stopPropagation();
-        currentState !== POSITION.BACK_VIEW && (setFocusBook(book), setOpenedPage(0));
+        currentState !== POSITION.BACK_VIEW && (setFocusBook(book), setOpenedPage(0),setFocusBackPage(null),setFocusFrontPage(null));
         console.log('clicking ...')
     }
 

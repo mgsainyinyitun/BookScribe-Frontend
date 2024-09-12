@@ -22,6 +22,11 @@ interface ctxProps {
 
     focusedBackPage: Page | null,
     setFocusBackPage: (newStaate: Page | null) => void;
+
+    api: string,
+
+    username: string,
+    setUsername: (newState: string) => void;
 }
 
 const Ctx = createContext<ctxProps | undefined>(undefined);
@@ -34,14 +39,19 @@ export const CtxProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
     const [focusedFrontPage, setFocusFrontPage] = useState<Page | null>(null);
     const [focusedBackPage, setFocusBackPage] = useState<Page | null>(null);
 
-    const [booStorage, updateBookStorage] = useState<Book[]>([new Book(10,books[1])]);
+    const [booStorage, updateBookStorage] = useState<Book[]>([new Book(10, books[1])]);
     const [bookContents, updateBookContents] = useState<any>([]);
 
+    const [api] = useState(import.meta.env.VITE_APP_API_BASE);
+
+    const [username, setUsername] = useState<string>('');
+
     useEffect(() => {
-        axios.get<Book[]>('http://localhost:3000/books')
+        axios.get<Book[]>(`${api}/books/public`, { params: {} })
             .then(response => {
                 let data = response.data;
                 let cx = []
+
                 for (let key in data) {
                     cx.push(data[key]);
                 }
@@ -54,11 +64,8 @@ export const CtxProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
 
     }, []);
 
-
-
-
     return (
-        <Ctx.Provider value={{ openedPage, setOpenedPage, booStorage, updateBookStorage, focusedBook, setFocusBook, focusedFrontPage, setFocusFrontPage, focusedBackPage, setFocusBackPage, bookContents, updateBookContents }}>
+        <Ctx.Provider value={{ api, openedPage, setOpenedPage, booStorage, updateBookStorage, focusedBook, setFocusBook, focusedFrontPage, setFocusFrontPage, focusedBackPage, setFocusBackPage, bookContents, updateBookContents, username, setUsername }}>
             {children}
         </Ctx.Provider>
     );

@@ -32,6 +32,10 @@ class Book {
         this.bookState = state;
     }
 
+    setShelfId(shelfId: number) {
+        this.shelfId = shelfId;
+    }
+
     setBookRef(ref: any) {
         this.bookRef = ref;
     }

@@ -32,6 +32,7 @@ const Controls: FC<controlProps> = ({ controlBtnClick, currentState }) => {
     }
     return (
         <>
+            {/** Previous and Next */}
             <div className={`w-full h-20 fixed bottom-1/2 right-0 flex justify-between px-10 items-center 
                 ${focusedBook !== null ? 'block' : 'hidden'}
                 `}>
@@ -46,7 +47,7 @@ const Controls: FC<controlProps> = ({ controlBtnClick, currentState }) => {
                     <FontAwesomeIcon icon={faCaretRight} />
                 </button>
             </div>
-
+            {/** changing shelf */}
             <div className='w-full h-20 fixed bottom-0 right-0 flex justify-center items-center gap-2'>
                 <button
                     onClick={() => { controlBtnClick(POSITION.CENTET_SHELF); setFocusBook(null) }}

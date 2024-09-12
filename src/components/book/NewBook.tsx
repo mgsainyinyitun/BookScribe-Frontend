@@ -26,7 +26,7 @@ const NewBook: FC<newBookProps> = ({ visible, setVisible }) => {
             onClick={e => { e.stopPropagation(); setVisible(false) }}
             className={`${visible ? 'block' : 'hidden'} absolute top-0 left-0 w-full h-full flex justify-center items-center bg-black bg-opacity-40`}>
 
-            <form onClick={e => e.stopPropagation()} onSubmit={addBookSubmit} className="bg-white w-[30%] p-10 rounded-lg">
+            <form onClick={e => e.stopPropagation()} onSubmit={addBookSubmit} className="bg-white w-[30%] p-10 rounded-3xl animate-slideIn">
                 <div className="mb-4">
                     <label htmlFor="shelfNumber" className="block text-sm font-medium text-gray-700">Shelf Number</label>
                     <select
@@ -34,7 +34,7 @@ const NewBook: FC<newBookProps> = ({ visible, setVisible }) => {
                         value={shelfNo}
                         onChange={(e) => { e.stopPropagation(); setShelfNo(parseInt(e.target.value)) }}
                         required
-                        className="bg-white text-black mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                        className="bg-white text-black mt-1 block w-full px-3 py-3 border border-gray-300 rounded-full shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                     >
                         <option value="1">1</option>
                         <option value="2">2</option>
@@ -44,7 +44,7 @@ const NewBook: FC<newBookProps> = ({ visible, setVisible }) => {
 
                 <button
                     type="submit"
-                    className="w-full bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                    className="w-full bg-blue-500 text-white px-4 py-3 rounded-full hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
                 >
                     CREATE
                 </button>
