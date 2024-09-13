@@ -1,13 +1,15 @@
-import { faIdCard, faRegistered, faSignIn, faSignOut, faUserCircle, faUserLarge, faUserPlus, faXmark } from '@fortawesome/free-solid-svg-icons';
+import { faIdCard, faSignIn, faSignOut, faUserLarge, faUserPlus, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { FC, useState } from 'react'
 import LoginForm from './LoginForm';
 import { useCtx } from '../../Ctx';
+import UserProfile from './UserProfile';
 
 const UserMgmt: FC = () => {
     const [menuVisible, setMenuVisible] = useState(false);
     const [loginVisibe, setLoginVisible] = useState(false);
-    const { username } = useCtx();
+    const [profileVisible, setProfileVisble] = useState(false);
+    const { username, setUsername } = useCtx();
 
     return (
         <>
@@ -31,11 +33,13 @@ const UserMgmt: FC = () => {
 
                             <div className='flex'>
                                 <button
-                                    // onClick={() => setVisible(!visible)}
+                                    onClick={() => setProfileVisble(true)}
                                     className={`w-12 h-12 bg-blue-800 text-white rounded-full flex items-center justify-center shadow-lg hover:bg-blue-600'}`}>
                                     <FontAwesomeIcon icon={faIdCard} />
                                 </button>
-                                <button className='bg-blue-800 text-white rounded-full w-32 ml-1'>
+                                <button
+                                    onClick={() => setProfileVisble(true)}
+                                    className='bg-blue-800 text-white rounded-full w-32 ml-1'>
                                     Profile
                                 </button>
                             </div>
@@ -66,11 +70,11 @@ const UserMgmt: FC = () => {
 
                             <div className='flex'>
                                 <button
-                                    // onClick={() => setNewBookVisible(true)}
+                                    onClick={() => { localStorage.clear(); setUsername('') }}
                                     className={`w-12 h-12 bg-blue-800 text-white rounded-full flex items-center justify-center shadow-lg hover:bg-blue-600'}`}>
                                     <FontAwesomeIcon icon={faSignOut} />
                                 </button>
-                                <button className='bg-blue-800 text-white rounded-full w-32 ml-1'>
+                                <button className='bg-blue-800 text-white rounded-full w-32 ml-1' onClick={() => { localStorage.clear(); setUsername('') }}>
                                     Logout
                                 </button>
                             </div>
@@ -81,6 +85,10 @@ const UserMgmt: FC = () => {
             <LoginForm
                 visible={loginVisibe}
                 setVisible={setLoginVisible}
+            />
+            <UserProfile
+                visible={profileVisible}
+                setVisible={setProfileVisble}
             />
         </>
     )

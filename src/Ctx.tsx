@@ -3,6 +3,7 @@ import Book from './objects/Book';
 import { books } from './demo/data';
 import axios from 'axios';
 import Page from './objects/Page';
+import apiWithToken from './api';
 
 interface ctxProps {
     openedPage: number;
@@ -47,6 +48,15 @@ export const CtxProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
     const [username, setUsername] = useState<string>('');
 
     useEffect(() => {
+
+        apiWithToken.post('/auth/validate')
+            .then(res => {
+                setUsername(res.data);
+            })
+            .catch(err => {
+                console.log(err);
+            });
+
         axios.get<Book[]>(`${api}/books/public`, { params: {} })
             .then(response => {
                 let data = response.data;
