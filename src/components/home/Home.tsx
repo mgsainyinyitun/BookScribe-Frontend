@@ -39,7 +39,7 @@ const Home: FC = () => {
                     azimuth={0.25}
                 />
                 <directionalLight intensity={1.5} position={[0, 0, 15]} />
-                <ambientLight intensity={0.5} />
+                <ambientLight intensity={0.4} />
                 <BookShelfModel
                     currentState={currentState}
                     toState={toState}

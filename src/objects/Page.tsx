@@ -19,8 +19,8 @@ class Page {
 
     public pageState: string = PAGE_STATE.CLOSE;
     public paperTexture = useLoader(TextureLoader, '/assets/images/paper_003.jpg');
-    public frontCover = useLoader(TextureLoader, "/assets/images/front_cover.jpg");
-    public backCover = useLoader(TextureLoader, "/assets/images/back_cover.jpg");
+    public frontCover = useLoader(TextureLoader, "/assets/images/front_cover.png");
+    public backCover = useLoader(TextureLoader, "/assets/images/back_cover.png");
 
     readonly WIDTH: number;
     readonly HEIGHT: number;
@@ -93,11 +93,11 @@ class Page {
             new MeshStandardMaterial({ color: '#D2b48c' }),
             new MeshStandardMaterial({ color: '#D2b48c' }),
             new MeshStandardMaterial({
-                color: this.pageIndex === 0 ? 'rgba(255, 255, 255)' : '#D2b48c',
+                color: this.pageIndex === 0 ? '' : '#D2b48c',
                 map: this.pageIndex === 0 ? this.frontCover : null,
             }),
             new MeshStandardMaterial({
-                color: this.pageIndex === this.maxIndex ? 'rgba(255, 255, 255)' : '#D2b48c',
+                color: this.pageIndex === this.maxIndex ? '' : '#D2b48c',
                 map: this.pageIndex === this.maxIndex ? this.backCover : null
             }),
         ];
@@ -109,7 +109,7 @@ class Page {
         const material = [
             mtrs[0], mtrs[1], mtrs[2], mtrs[3], mtrs[4],
             new MeshStandardMaterial({
-                color: this.pageIndex === this.maxIndex ? 'rgb(255,255,255)' : '#D2b48c',
+                color: this.pageIndex === this.maxIndex ? '' : '#D2b48c',
                 map: this.pageIndex !== this.maxIndex ? this.createCanvasTexture(`${this.calculatePageNumber().back}`, text) : this.backCover
             }),
         ]
@@ -120,7 +120,7 @@ class Page {
         const material = [
             mtrs[0], mtrs[1], mtrs[2], mtrs[3],
             new MeshStandardMaterial({
-                color: this.pageIndex === this.maxIndex ? 'blue' : '#D2b48c',
+                color: this.pageIndex === this.maxIndex ? '' : '#D2b48c',
                 map: this.pageIndex !== this.maxIndex ? this.createCanvasTexture(`${this.calculatePageNumber().front}`, text) : null
             }),
             mtrs[5],

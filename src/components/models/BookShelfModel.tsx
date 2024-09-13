@@ -31,14 +31,6 @@ const BookShelfModel: FC<bookshelfProps> = ({ currentState, toState, setCurrentS
     const mod_nodes = nodes as any;
 
     const setCameraToOrigin = (): boolean => {
-
-        // console.log(cameraRef.current.position);
-
-        // cameraRef.current.position.set(0, 0, 1);
-
-        // cameraRef.current.position.setX(0);
-        // cameraRef.current.position.setY(0);
-        // cameraRef.current.position.setZ(1);
         let isCamMoved = false;
 
         if (Math.abs(cameraRef.current.position.x) > 0.001) {
@@ -72,7 +64,7 @@ const BookShelfModel: FC<bookshelfProps> = ({ currentState, toState, setCurrentS
 
     useEffect(() => {
         const args = bookContents.map(ctx => {
-            const book = new Book(10, ctx.text);
+            const book = new Book(ctx.numberOfpage, ctx.text)
             if (SHELF_ID[ctx.shelf]) {
                 book.setShelfId(parseInt(SHELF_ID[ctx.shelf]));
             } else {
@@ -80,6 +72,7 @@ const BookShelfModel: FC<bookshelfProps> = ({ currentState, toState, setCurrentS
             }
             return book;
         })
+        // const args = [new Book(20),new Book(10)]
         updateBookStorage(args);
     }, [bookContents])
 
@@ -95,7 +88,6 @@ const BookShelfModel: FC<bookshelfProps> = ({ currentState, toState, setCurrentS
                 default: break;
             }
         }
-
     })
 
     return (
@@ -122,7 +114,7 @@ const BookShelfModel: FC<bookshelfProps> = ({ currentState, toState, setCurrentS
                     onClickFun={() => setToState(POSITION.UP_SHELF)}
                     currentState={currentState}
                     toState={toState}
-                    books={booStorage.filter(book => book.shelfId === 1)}
+                    books={booStorage.filter(book => book.shelfId === 1).sort((a, b) => a.numberofPages - b.numberofPages)}
                 />
             </mesh>
             <mesh position={[0.21, 0.72, 0]}>
@@ -130,7 +122,7 @@ const BookShelfModel: FC<bookshelfProps> = ({ currentState, toState, setCurrentS
                     onClickFun={() => setToState(POSITION.CENTET_SHELF)}
                     currentState={currentState}
                     toState={toState}
-                    books={booStorage.filter(book => book.shelfId === 2)}
+                    books={booStorage.filter(book => book.shelfId === 2).sort((a, b) => a.numberofPages - b.numberofPages)}
                 // books={bookContents.map(ctx => new Book(10, ctx.text))}
                 />
             </mesh>
@@ -139,7 +131,7 @@ const BookShelfModel: FC<bookshelfProps> = ({ currentState, toState, setCurrentS
                     onClickFun={() => setToState(POSITION.LOW_SHELF)}
                     currentState={currentState}
                     toState={toState}
-                    books={booStorage.filter(book => book.shelfId === 3)}
+                    books={booStorage.filter(book => book.shelfId === 3).sort((a, b) => a.numberofPages - b.numberofPages)}
                 />
             </mesh>
         </group>

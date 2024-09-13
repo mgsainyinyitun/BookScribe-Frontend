@@ -14,14 +14,18 @@ class Book {
     public ctx: string[] = [];
     public shelfId: number;
 
-    constructor(noOfPages: number = 20, text?: string[], shelf?: number) {
+    constructor(noOfPages: number, text?: string[], shelf?: number) {
         this.position = [0, 0, 0];
         this.rotation = [0, 0, 0];
         this.scale = [1, 1, 1];
         this.ctx = text || [];
-        this.numberofPages = noOfPages;
+        this.numberofPages = noOfPages + 2; // number of page + front cover and back cover
         this.createPages();
         this.shelfId = shelf || 1;
+    }
+
+    setNoOfPages(noOfPages: number) {
+        this.numberofPages = noOfPages + 2;
     }
 
     setOpenPage(page: number) {
