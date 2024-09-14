@@ -1,3 +1,5 @@
+import { faClose } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { FC, useEffect } from 'react';
 
 interface notiProps {
@@ -25,38 +27,31 @@ const Notification: FC<notiProps> = ({ noti, setNoti }) => {
     };
 
     return (
-
-        <div
-            className={`${show ? 'block animate-slideIn' : 'hidden animate-slideOut opacity-0'} z-50  fixed top-5 right-1/2 max-w-xs bg-white border rounded-lg shadow-lg p-4 ${typeClasses[type]} border ${typeClasses[type].split(' ')[1]}`}
-        >
-            <div className="flex items-start">
-                <svg
-                    className={`w-6 h-6 ${type === 'success' ? 'text-green-500' : type === 'error' ? 'text-red-500' : 'text-blue-500'} mr-3`}
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                    xmlns="http://www.w3.org/2000/svg"
-                >
-                    {type === 'success' && <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />}
-                    {type === 'error' && <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />}
-                    {type === 'info' && <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4m0 4h.01M5.5 5.5l13 13" />}
-                </svg>
-                <div>
-                    <p className="font-semibold text-gray-800">{type.charAt(0).toUpperCase() + type.slice(1)}!</p>
-                    <p className="text-gray-600">{message}</p>
+        <div className='fixed top-5 w-full flex justify-center items-cente min-w-60'>
+            <div
+                className={`${show ? 'block animate-slideIn' : 'hidden animate-slideOut opacity-0'} z-50 bg-white border rounded-lg shadow-lg p-4 ${typeClasses[type]} border ${typeClasses[type].split(' ')[1]}`}
+            >
+                <div className="flex items-start">
+                    <svg
+                        className={`w-6 h-6 ${type === 'success' ? 'text-green-500' : type === 'error' ? 'text-red-500' : 'text-blue-500'} mr-3`}
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg"
+                    >
+                        {type === 'success' && <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />}
+                        {type === 'error' && <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />}
+                        {type === 'info' && <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4m0 4h.01M5.5 5.5l13 13" />}
+                    </svg>
+                    <div>
+                        <p className="font-semibold text-gray-800">{type.charAt(0).toUpperCase() + type.slice(1)}!</p>
+                        <p className="text-gray-600">{message}</p>
+                    </div>
                 </div>
+                <button onClick={() => setNoti({ ...noti, show: false })} className="absolute top-2 right-2 text-gray-600 hover:text-gray-800">
+                    <FontAwesomeIcon icon={faClose} />
+                </button>
             </div>
-            <button onClick={onClose} className="absolute top-2 right-2 text-gray-600 hover:text-gray-800">
-                <svg
-                    className="w-4 h-4"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                    xmlns="http://www.w3.org/2000/svg"
-                >
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
-                </svg>
-            </button>
         </div>
     );
 };

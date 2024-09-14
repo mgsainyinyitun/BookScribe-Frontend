@@ -11,10 +11,11 @@ class Book {
     public numberofPages: number = 0;
     public openedPage: number = 0;
     public bookState: string = BOOK_STATE.IN_SHELF;
-    public ctx: string[] = [];
+    public ctx = [];
     public shelfId: number;
+    public bookId: number = -1;
 
-    constructor(noOfPages: number, text?: string[], shelf?: number) {
+    constructor(noOfPages: number, text?: any, shelf?: number) {
         this.position = [0, 0, 0];
         this.rotation = [0, 0, 0];
         this.scale = [1, 1, 1];
@@ -22,6 +23,10 @@ class Book {
         this.numberofPages = noOfPages + 2; // number of page + front cover and back cover
         this.createPages();
         this.shelfId = shelf || 1;
+    }
+
+    setBookId(id: number) {
+        this.bookId = id;
     }
 
     setNoOfPages(noOfPages: number) {
@@ -44,24 +49,29 @@ class Book {
         this.bookRef = ref;
     }
 
-
-    // 0,1,2,3,4,5
-
-    // 1 -> 0,1
-    // 2 -> 2,3
-    // 3 -> 4,5
-    // 4 -> 6,7
-    // 5 -> 8,9
-
     createPages() {
         for (let i = 0; i < this.numberofPages; i++) {  // 0 - 19
             let tmp = new Page(i, this.numberofPages - 1);
 
-            if (i !== 0 && i !== this.numberofPages - 1) {
-                if ((i - 1) * 2 < this.ctx.length || i + (i - 1) < this.ctx.length) {
-                    i + (i - 1) >= this.ctx.length ? tmp.setCtx(this.ctx[(i - 1) * 2], '') :
-                        tmp.setCtx(this.ctx[(i - 1) * 2], this.ctx[i + (i - 1)]);  // 1-> 0; 2-> 2 ; 3-> 4
-                }
+            // if (i !== 0 && i !== this.numberofPages - 1) { // if not cover pages
+            //     if ((i - 1) * 2 < this.ctx.length || i + (i - 1) < this.ctx.length) {
+            //         i + (i - 1) >= this.ctx.length ? tmp.setCtx(this.ctx[(i - 1) * 2], '') :
+            //             tmp.setCtx(this.ctx[(i - 1) * 2], this.ctx[i + (i - 1)]);  // 1-> 0; 2-> 2 ; 3-> 4
+            //     }
+            // }
+
+            // 1 => 1,2   
+            // 2 => 3,4
+            // 3 => 5,6
+            // 4 => 7,8
+            // 5 => 9,10
+            // 6 => 11,12
+            // 7 => 13,14
+
+            if (i !== 0 && i !== this.numberofPages - 1) { // if not cover pages
+                const fp: any = this.ctx.find((it: any) => it.no === i + (i - 1));
+                const bp: any = this.ctx.find((it: any) => it.no === i * 2)
+                tmp.setCtx(fp ? fp.contexts : '', bp ? bp.contexts : '');
             }
             this.pages.push(tmp);
         }

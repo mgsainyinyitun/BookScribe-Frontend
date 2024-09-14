@@ -31,7 +31,7 @@ const LoginForm: FC<loginFormProps> = ({ visible, setVisible }) => {
                 localStorage.setItem('username', JSON.stringify(response.data.username));
                 setUsername(response.data.username);
                 setNoti({ ...noti, message: "Login successfully!", show: true, type: 'success' });
-                
+
             })
             .catch(error => {
                 console.error(error);

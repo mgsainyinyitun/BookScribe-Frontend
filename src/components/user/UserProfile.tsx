@@ -25,7 +25,7 @@ const UserProfile: FC<userProfileProps> = ({ visible, setVisible }) => {
     useEffect(() => {
         if (visible) {
             api.get('/user/me')
-                .then((response: any) => setData(response.data))
+                .then((response: any) => { setData(response.data); setPhone(response.data.phone); })
                 .catch((error: any) => console.error(error));
         }
     }, [visible])
@@ -103,7 +103,7 @@ const UserProfile: FC<userProfileProps> = ({ visible, setVisible }) => {
                             type='text'
                             id="phone"
                             onChange={e => { setPhone(e.target.value); setChange(true) }}
-                            value={data?.phone || phone}
+                            value={phone}
                             className="bg-white text-black mt-1 block w-full px-3 py-3 border border-gray-300 rounded-full shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                         />
                     </div>

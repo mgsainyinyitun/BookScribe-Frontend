@@ -35,6 +35,16 @@ const UserMgmt: FC = () => {
         }
     }, [username])
 
+
+    const logout = () => {
+        if (isLogin) {
+            localStorage.clear();
+            setUsername('');
+            setIsLogin(false);
+            setNoti({ ...noti, message: "Logout successfully!", show: true, type: 'success' });
+        }
+    }
+
     return (
         <>
             <Notification
@@ -49,9 +59,12 @@ const UserMgmt: FC = () => {
                         {menuVisible ? <FontAwesomeIcon icon={faXmark} /> : <FontAwesomeIcon icon={faUserLarge} />}
                     </button>
 
-                    {username.length !== 0 && !menuVisible && <button className={`bg-blue-500 text-white rounded-full w-32 ml-1 ${!menuVisible ? 'animate-slideIn' : 'animate-slideOut opacity-0'}`}>
-                        {username}
-                    </button>}
+                    {username.length !== 0 && !menuVisible &&
+                        <button
+                            onClick={() => { setMenuVisible(!menuVisible); setProfileVisble(!profileVisible) }}
+                            className={`bg-blue-500 text-white rounded-full w-32 ml-1 ${!menuVisible ? 'animate-slideIn' : 'animate-slideOut opacity-0'}`}>
+                            {username}
+                        </button>}
                 </div>
 
                 {
@@ -99,18 +112,13 @@ const UserMgmt: FC = () => {
 
                             <div className='flex'>
                                 <button
-                                    onClick={() => { localStorage.clear(); setUsername('') }}
+                                    onClick={logout}
                                     className={`w-12 h-12 ${isLogin ? 'bg-blue-800' : 'bg-gray-400'} text-white rounded-full flex items-center justify-center shadow-lg hover:bg-blue-600'}`}>
                                     <FontAwesomeIcon icon={faSignOut} />
                                 </button>
                                 <button
                                     className={`${isLogin ? 'bg-blue-800' : 'bg-gray-400'} text-white rounded-full w-32 ml-1`}
-                                    onClick={() => {
-                                        localStorage.clear();
-                                        setUsername('');
-                                        setNoti({ ...noti, message: "Logout successfully!", show: true, type: 'success' });
-
-                                    }}>
+                                    onClick={logout}>
                                     Logout
                                 </button>
                             </div>

@@ -1,6 +1,5 @@
 import React, { createContext, useContext, useState, ReactNode, useEffect } from 'react';
 import Book from './objects/Book';
-import { books } from './demo/data';
 import axios from 'axios';
 import Page from './objects/Page';
 import apiWithToken from './api';
@@ -22,7 +21,10 @@ interface ctxProps {
     setFocusFrontPage: (newStaate: Page | null) => void;
 
     focusedBackPage: Page | null,
-    setFocusBackPage: (newStaate: Page | null) => void;
+    setFocusBackPage: (newState: Page | null) => void;
+
+    requestPagesChange: any[]
+    setRequestPagesChange: (newState: any[]) => void;
 
     api: string,
 
@@ -40,8 +42,10 @@ export const CtxProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
     const [focusedFrontPage, setFocusFrontPage] = useState<Page | null>(null);
     const [focusedBackPage, setFocusBackPage] = useState<Page | null>(null);
 
-    const [booStorage, updateBookStorage] = useState<Book[]>([new Book(10, books[1])]);
+    const [booStorage, updateBookStorage] = useState<Book[]>([new Book(10, [], 3)]); // new Book(10,["temp page"],3)
     const [bookContents, updateBookContents] = useState<any>([]);
+
+    const [requestPagesChange, setRequestPagesChange] = useState<any[]>([]);
 
     const [api] = useState(import.meta.env.VITE_APP_API_BASE);
 
@@ -75,7 +79,7 @@ export const CtxProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
     }, []);
 
     return (
-        <Ctx.Provider value={{ api, openedPage, setOpenedPage, booStorage, updateBookStorage, focusedBook, setFocusBook, focusedFrontPage, setFocusFrontPage, focusedBackPage, setFocusBackPage, bookContents, updateBookContents, username, setUsername }}>
+        <Ctx.Provider value={{ api, openedPage, setOpenedPage, booStorage, updateBookStorage, focusedBook, setFocusBook, focusedFrontPage, setFocusFrontPage, focusedBackPage, setFocusBackPage, bookContents, updateBookContents, username, setUsername, requestPagesChange, setRequestPagesChange }}>
             {children}
         </Ctx.Provider>
     );
