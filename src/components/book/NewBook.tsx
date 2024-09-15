@@ -15,7 +15,7 @@ interface newBookProps {
 
 const NewBook: FC<newBookProps> = ({ visible, setVisible }) => {
 
-    const { booStorage, updateBookStorage } = useCtx();
+    const { bookStorage, updateBookStorage } = useCtx();
     const [shelfNo, setShelfNo] = useState<number>(1);
     const [noOfPages, setNoOfPages] = useState<number>(20);
     const { username, setLoading } = useCtx();
@@ -30,7 +30,7 @@ const NewBook: FC<newBookProps> = ({ visible, setVisible }) => {
         onSuccess: (data) => {
             const nb = new Book(noOfPages, [], shelfNo);
             nb.setBookId(data.id);
-            updateBookStorage([...booStorage, nb])
+            updateBookStorage([...bookStorage, nb])
             setVisible(false);
             setNoti({ ...noti, message: "Successfully create new Book!", show: true, type: 'success' });
         },
@@ -50,7 +50,7 @@ const NewBook: FC<newBookProps> = ({ visible, setVisible }) => {
         if (username.length !== 0) {
             mutation.mutate(dt);
         } else {
-            updateBookStorage([...booStorage, new Book(noOfPages, [], shelfNo)])
+            updateBookStorage([...bookStorage, new Book(noOfPages, [], shelfNo)])
             setNoti({ ...noti, message: "Successfully create new Book!", show: true, type: 'success' });
             setVisible(false);
         }
@@ -110,8 +110,8 @@ const NewBook: FC<newBookProps> = ({ visible, setVisible }) => {
                             required
                             className="bg-white text-black mt-1 block w-full px-3 py-3 border border-gray-300 rounded-full shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                         >
+                            <option value="10">10</option>
                             <option value="20">20</option>
-                            <option value="30">30</option>
                         </select>
                     </div>
 

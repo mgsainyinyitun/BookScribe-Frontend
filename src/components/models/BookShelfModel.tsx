@@ -7,7 +7,6 @@ import { Group, PerspectiveCamera } from 'three';
 import { POSITION, SHELF_ID } from '../../constants/BookShelfConstant';
 import StorageModel from './StorageModel';
 import { useCtx } from '../../Ctx';
-import Book from '../../objects/Book';
 
 const bookshelf = new BookShelf();
 
@@ -23,7 +22,7 @@ const BookShelfModel: FC<bookshelfProps> = ({ currentState, toState, setCurrentS
     const { camera } = useThree();
     const { nodes, materials } = useGLTF(shelf)
     const bookRef = useRef<Group>(null);
-    const { booStorage } = useCtx();
+    const { bookStorage } = useCtx();
 
     bookshelf.setRef(bookRef);
     bookshelf.setCamera(camera as PerspectiveCamera);
@@ -99,7 +98,7 @@ const BookShelfModel: FC<bookshelfProps> = ({ currentState, toState, setCurrentS
                     onClickFun={() => setToState(POSITION.UP_SHELF)}
                     currentState={currentState}
                     toState={toState}
-                    books={booStorage.filter(book => book.shelfId === 1).sort((a, b) => a.numberofPages - b.numberofPages)}
+                    books={bookStorage.filter(book => book.shelfId === 1).sort((a, b) => a.numberofPages - b.numberofPages)}
                 />
             </mesh>
             <mesh position={[0.21, 0.72, 0]}>
@@ -107,7 +106,7 @@ const BookShelfModel: FC<bookshelfProps> = ({ currentState, toState, setCurrentS
                     onClickFun={() => setToState(POSITION.CENTET_SHELF)}
                     currentState={currentState}
                     toState={toState}
-                    books={booStorage.filter(book => book.shelfId === 2).sort((a, b) => a.numberofPages - b.numberofPages)}
+                    books={bookStorage.filter(book => book.shelfId === 2).sort((a, b) => a.numberofPages - b.numberofPages)}
                 />
             </mesh>
             <mesh position={[0.21, 0.2, 0]}>
@@ -115,7 +114,7 @@ const BookShelfModel: FC<bookshelfProps> = ({ currentState, toState, setCurrentS
                     onClickFun={() => setToState(POSITION.LOW_SHELF)}
                     currentState={currentState}
                     toState={toState}
-                    books={booStorage.filter(book => book.shelfId === 3).sort((a, b) => a.numberofPages - b.numberofPages)}//booStorage.filter(book => book.shelfId === 3).sort((a, b) => a.numberofPages - b.numberofPages)}
+                    books={bookStorage.filter(book => book.shelfId === 3).sort((a, b) => a.numberofPages - b.numberofPages)}//booStorage.filter(book => book.shelfId === 3).sort((a, b) => a.numberofPages - b.numberofPages)}
                 />
             </mesh>
         </group>

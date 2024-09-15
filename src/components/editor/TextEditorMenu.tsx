@@ -3,8 +3,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { FC, useEffect, useState } from 'react'
 import { useCtx } from '../../Ctx'
 import { useMutation } from 'react-query'
-import { addUpdatePages } from '../../api/common'
+import { addUpdatePages, deleteBook } from '../../api/common'
 import Notification from '../notification/Notification'
+import Book from '../../objects/Book'
 
 
 interface textEditorProps {
@@ -19,18 +20,31 @@ interface textEditorProps {
 
 const TextEditorMenu: FC<textEditorProps> = ({ menuVisible, setTextEditorVisible, setNewBookVisible, onChangeSave, isFrontChanged, isBackChanged, textEditorVisible }) => {
 
-    const { requestPagesChange, username, setLoading, focusedBook } = useCtx();
+    const { setFocusBook, requestPagesChange, username, setLoading, focusedBook, setModalCtx, setModalTitle, setModalVisible, modalAccept, setModalAccept, updateBookStorage, bookStorage } = useCtx();
     const [noti, setNoti] = useState({
         message: '',
         type: 'success',
         show: false,
     });
+    const [toDeleteBook, setToDeleteBook] = useState<Book>();
 
 
     const mutation = useMutation(addUpdatePages, {
         onSuccess: (data) => {
             console.log(data)
             setNoti({ ...noti, message: `Successfully write ${data.no} pages to your account`, show: true, type: 'success' });
+        },
+        onError: (err) => {
+            console.log(err);
+            setNoti({ ...noti, message: "Something wrong! Please try again", show: true, type: 'error' });
+        }
+    });
+
+    const deletMutation = useMutation(deleteBook, {
+        onSuccess: (data) => {
+            setFocusBook(null);
+            updateBookStorage([...bookStorage.filter(b => b.bookId !== data.id)]);
+            setNoti({ ...noti, message: `Successfully delete with id ${data.id}.`, show: true, type: 'success' });
         },
         onError: (err) => {
             console.log(err);
@@ -50,13 +64,29 @@ const TextEditorMenu: FC<textEditorProps> = ({ menuVisible, setTextEditorVisible
         }
     }
 
+
     const onBookDelete = () => {
         if (focusedBook) {
-            console.log('can delete');
+            if (username !== focusedBook.owner) {
+                setNoti({ ...noti, message: "You cannot delete this book!", show: true, type: 'error' });
+                return;
+            }
+            setModalTitle("Delete This Book?")
+            setModalCtx("Are you sure you want to delete this book! This cannot be undone.")
+            setModalVisible(true);
+            setToDeleteBook(focusedBook);
         } else {
             setNoti({ ...noti, message: "Please open a book you want to delete", show: true, type: 'error' });
         }
     }
+
+
+    useEffect(() => {
+        if (modalAccept === true && toDeleteBook) {
+            deletMutation.mutate(toDeleteBook.bookId);
+            setModalAccept(false);
+        }
+    }, [modalAccept])
 
     useEffect(() => {
         setLoading(mutation.isLoading);

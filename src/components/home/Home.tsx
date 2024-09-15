@@ -9,6 +9,7 @@ import NewBook from '../book/NewBook'
 import UserMgmt from '../user/UserMgmt'
 import Loading from '../loading/Loading'
 import { useCtx } from '../../Ctx'
+import Modal from '../modal/Modal'
 const Home: FC = () => {
 
     const [currentState, setCurrentState] = useState<string>(POSITION.BACK_VIEW);
@@ -50,6 +51,7 @@ const Home: FC = () => {
             <NewBook visible={newBookVisible} setVisible={setNewBookVisible} />
             <UserMgmt />
             <Loading visible={loading} />
+            <Modal/>
         </div>
     )
 }

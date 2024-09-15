@@ -1,15 +1,14 @@
 import React, { createContext, useContext, useState, ReactNode, useEffect } from 'react';
 import Book from './objects/Book';
-import axios from 'axios';
 import Page from './objects/Page';
-import { getPrivateBooks, validateToken } from './api/common';
+import { getPrivateBooks, getPublicBook, validateToken } from './api/common';
 import { SHELF_ID } from './constants/BookShelfConstant';
 
 interface ctxProps {
     openedPage: number;
     setOpenedPage: (newState: number) => void;
 
-    booStorage: Book[],
+    bookStorage: Book[],
     updateBookStorage: (newState: Book[]) => void;
 
     focusedBook: Book | null,
@@ -31,6 +30,19 @@ interface ctxProps {
 
     loading: boolean,
     setLoading: (newState: boolean) => void;
+
+    modalTitle: string,
+    modalCtx: string,
+    modalVisible: boolean,
+
+    setModalTitle: (s: string) => void,
+    setModalCtx: (s: string) => void,
+    setModalVisible: (c: boolean) => void,
+    modalAccept: boolean,
+    setModalAccept: (mf: any) => void,
+
+    bookReload: () => void;
+
 }
 
 const Ctx = createContext<ctxProps | undefined>(undefined);
@@ -43,7 +55,7 @@ export const CtxProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
     const [focusedFrontPage, setFocusFrontPage] = useState<Page | null>(null);
     const [focusedBackPage, setFocusBackPage] = useState<Page | null>(null);
 
-    const [booStorage, updateBookStorage] = useState<Book[]>([]); // new Book(10,["temp page"],3)
+    const [bookStorage, updateBookStorage] = useState<Book[]>([]); // new Book(10,["temp page"],3)
 
     const [requestPagesChange, setRequestPagesChange] = useState<any[]>([]);
 
@@ -53,7 +65,11 @@ export const CtxProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
 
     const [loading, setLoading] = useState<boolean>(false);
 
+    const [modalTitle, setModalTitle] = useState<string>('');
+    const [modalCtx, setModalCtx] = useState<string>('');
+    const [modalVisible, setModalVisible] = useState<boolean>(false);
 
+    const [modalAccept, setModalAccept] = useState<boolean>(false);
 
     const updateBookStorageFun = (ctx: any) => {
         let cx: Book[] = [];
@@ -71,33 +87,27 @@ export const CtxProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
             cx.push(bt);
         })
 
-        updateBookStorage([...booStorage, ...cx])
+        updateBookStorage([...bookStorage, ...cx])
     }
 
-    useEffect(() => {
+    const bookReload = () => {
+        updateBookStorage([]);
         if (username.length !== 0) {
             getPrivateBooks(updateBookStorageFun);
         }
-    }, [username])
-
-
+        getPublicBook(api, updateBookStorageFun);
+    };
 
     useEffect(() => {
+        bookReload();
+    }, [username])
 
+    useEffect(() => {
         validateToken(setUsername);
-
-        axios.get<Book[]>(`${api}/books/public`, { params: {} })
-            .then(response => {
-                updateBookStorageFun(response.data);
-            })
-            .catch(error => {
-                console.error('Error fetching data:', error);
-            });
-
     }, []);
 
     return (
-        <Ctx.Provider value={{ api, openedPage, setOpenedPage, booStorage, updateBookStorage, focusedBook, setFocusBook, focusedFrontPage, setFocusFrontPage, focusedBackPage, setFocusBackPage, username, setUsername, requestPagesChange, setRequestPagesChange, loading, setLoading }}>
+        <Ctx.Provider value={{ api, openedPage, setOpenedPage, bookStorage, updateBookStorage, focusedBook, setFocusBook, focusedFrontPage, setFocusFrontPage, focusedBackPage, setFocusBackPage, username, setUsername, requestPagesChange, setRequestPagesChange, loading, setLoading, modalTitle, setModalTitle, modalCtx, setModalCtx, modalVisible, setModalVisible, modalAccept, setModalAccept, bookReload }}>
             {children}
         </Ctx.Provider>
     );
