@@ -1,6 +1,5 @@
 import { Bone, BoxGeometry, CanvasTexture, Float32BufferAttribute, MeshStandardMaterial, Skeleton, SkinnedMesh, TextureLoader, Uint16BufferAttribute, Vector3 } from "three";
 import { PAGE_STATE } from "../constants/PageConstant";
-import { useLoader } from "@react-three/fiber";
 import Book from "./Book";
 import { BOOK_STATE } from "../constants/BookConstant";
 
@@ -18,9 +17,11 @@ class Page {
     bctx: string = '';
 
     public pageState: string = PAGE_STATE.CLOSE;
-    public paperTexture = useLoader(TextureLoader, '/assets/images/paper_003.jpg');
-    public frontCover = useLoader(TextureLoader, "/assets/images/front_cover.png");
-    public backCover = useLoader(TextureLoader, "/assets/images/back_cover.png");
+    public frontCover = null;
+    public backCover = null;
+
+    // public frontCover = useLoader(TextureLoader, "/assets/images/front_cover.png");
+    // public backCover = useLoader(TextureLoader, "/assets/images/back_cover.png");
 
     readonly WIDTH: number;
     readonly HEIGHT: number;
@@ -33,16 +34,14 @@ class Page {
         return Object.assign(Object.create(Object.getPrototypeOf(this)), this);
     }
 
-    constructor(idx: number, mIdx: number) {//3.2
+    constructor(idx: number, mIdx: number, fcv?: any, bcv?: any) {//3.2
         this.position = [-0.11, 0, 0];
         this.rotation = [0, Math.PI, 0]
         this.scale = [1, 1, 1]
         this.args = [0.2, 0.32, 0.001]
         this.WIDTH = 0.2;
         this.HEIGHT = 0.32;
-        // this.THICKNESS = 0.0001;
         this.THICKNESS = 0.0005;
-        // this.THICKNESS = 0.01;
         this.SEGMENTS = 15;
         this.SEGMENT_WIDTH = this.WIDTH / this.SEGMENTS;
         this.geomentry = new BoxGeometry(
@@ -52,7 +51,8 @@ class Page {
             this.SEGMENTS,
             2
         );
-        // this.geomentry.translate(0, 0, this.WIDTH/2);
+        this.frontCover = fcv;
+        this.backCover = bcv;
         this.pageIndex = idx;
         this.maxIndex = mIdx;
         this.computeSkinIndicesAndWeights();
@@ -104,6 +104,30 @@ class Page {
         return materials;
     }
 
+
+    updateFrontCoverPage(mtrs: MeshStandardMaterial[], cover: any) {
+        const material = [
+            mtrs[0], mtrs[1], mtrs[2], mtrs[3],
+            new MeshStandardMaterial({
+                map: cover,
+            }),
+            mtrs[5]
+        ];
+        this.frontCover = cover;
+        return material;
+    }
+
+    updateBackCoverPage(mtrs: MeshStandardMaterial[], cover: any) {
+        const material = [
+            mtrs[0], mtrs[1], mtrs[2], mtrs[3],
+            mtrs[4],
+            new MeshStandardMaterial({
+                map: cover,
+            }),
+        ];
+        this.backCover = cover;
+        return material;
+    }
 
     updateFrontMaterials(mtrs: MeshStandardMaterial[], text: string): MeshStandardMaterial[] {
         const material = [
@@ -189,14 +213,7 @@ class Page {
     drawText(context: any, text: string) {
         context.font = '25px Arial';
         context.fillStyle = 'black';
-        // context.textAlign = 'justify';
-        // context.fillText(text, canvas.width / 2, this.initLine);
-        // context.fillText(text, canvas.width / 2, this.initLine + this.lineSpace);
-        // let txt = "How much wood would a woodchuck chuck if a woodchuck could chuck wood this is ome thsing if it actual working or not???"
-
         this.wrapText(context, text, this.initLeftX, this.initLineY, 780, 25);
-
-
     }
 
     wrapText(context: any, text: string, x: number, y: number, maxWidth: number, fontSize: number, fontFace?: number) {

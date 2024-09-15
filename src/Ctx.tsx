@@ -2,8 +2,8 @@ import React, { createContext, useContext, useState, ReactNode, useEffect } from
 import Book from './objects/Book';
 import axios from 'axios';
 import Page from './objects/Page';
-import apiWithToken from './api';
 import { getPrivateBooks, validateToken } from './api/common';
+import { SHELF_ID } from './constants/BookShelfConstant';
 
 interface ctxProps {
     openedPage: number;
@@ -11,9 +11,6 @@ interface ctxProps {
 
     booStorage: Book[],
     updateBookStorage: (newState: Book[]) => void;
-
-    bookContents: any[],
-    updateBookContents: (newState: any[]) => void;
 
     focusedBook: Book | null,
     setFocusBook: (newState: Book | null) => void;
@@ -31,6 +28,9 @@ interface ctxProps {
 
     username: string,
     setUsername: (newState: string) => void;
+
+    loading: boolean,
+    setLoading: (newState: boolean) => void;
 }
 
 const Ctx = createContext<ctxProps | undefined>(undefined);
@@ -43,8 +43,7 @@ export const CtxProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
     const [focusedFrontPage, setFocusFrontPage] = useState<Page | null>(null);
     const [focusedBackPage, setFocusBackPage] = useState<Page | null>(null);
 
-    const [booStorage, updateBookStorage] = useState<Book[]>([new Book(10, [])]); // new Book(10,["temp page"],3)
-    const [bookContents, updateBookContents] = useState<any>([]);
+    const [booStorage, updateBookStorage] = useState<Book[]>([]); // new Book(10,["temp page"],3)
 
     const [requestPagesChange, setRequestPagesChange] = useState<any[]>([]);
 
@@ -52,18 +51,32 @@ export const CtxProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
 
     const [username, setUsername] = useState<string>('');
 
-    const updateBookContentsFun = (data: any) => {
-        let cx = []
-        for (let key in data) {
-            cx.push(data[key]);
-        }
-        updateBookContents([...bookContents, ...cx]);
-    }
+    const [loading, setLoading] = useState<boolean>(false);
 
+
+
+    const updateBookStorageFun = (ctx: any) => {
+        let cx: Book[] = [];
+
+        ctx.map((c: any) => {
+            const bt = new Book(c.numberOfpage, c.text);
+            bt.setBookId(c.id);
+            bt.setBookType(c.bookType);
+            bt.setOwner(c.owner);
+            if (SHELF_ID[c.shelf]) {
+                bt.setShelfId(parseInt(SHELF_ID[c.shelf]));
+            } else {
+                bt.setShelfId(SHELF_ID.SHELF_UPPER);
+            }
+            cx.push(bt);
+        })
+
+        updateBookStorage([...booStorage, ...cx])
+    }
 
     useEffect(() => {
         if (username.length !== 0) {
-            getPrivateBooks(updateBookContents);
+            getPrivateBooks(updateBookStorageFun);
         }
     }, [username])
 
@@ -75,7 +88,7 @@ export const CtxProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
 
         axios.get<Book[]>(`${api}/books/public`, { params: {} })
             .then(response => {
-                updateBookContentsFun(response.data);
+                updateBookStorageFun(response.data);
             })
             .catch(error => {
                 console.error('Error fetching data:', error);
@@ -84,7 +97,7 @@ export const CtxProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
     }, []);
 
     return (
-        <Ctx.Provider value={{ api, openedPage, setOpenedPage, booStorage, updateBookStorage, focusedBook, setFocusBook, focusedFrontPage, setFocusFrontPage, focusedBackPage, setFocusBackPage, bookContents, updateBookContents, username, setUsername, requestPagesChange, setRequestPagesChange }}>
+        <Ctx.Provider value={{ api, openedPage, setOpenedPage, booStorage, updateBookStorage, focusedBook, setFocusBook, focusedFrontPage, setFocusFrontPage, focusedBackPage, setFocusBackPage, username, setUsername, requestPagesChange, setRequestPagesChange, loading, setLoading }}>
             {children}
         </Ctx.Provider>
     );

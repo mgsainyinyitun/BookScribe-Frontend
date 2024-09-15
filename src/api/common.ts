@@ -21,10 +21,10 @@ export const validateToken = (setUsername: (nm: string) => void) => {
         });
 }
 
-export const getPrivateBooks = (updateBookContentsFun: (data: any) => void) => {
+export const getPrivateBooks = (updateBookStorageFun: (data: any) => void) => {
     api.get('/books/private')
         .then(res => {
-            updateBookContentsFun(res.data);
+            updateBookStorageFun(res.data);
         })
         .catch(err => {
             console.log(err);

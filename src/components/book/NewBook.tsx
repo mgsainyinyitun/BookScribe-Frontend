@@ -1,4 +1,4 @@
-import { FC, useState } from "react"
+import { FC, useEffect, useState } from "react"
 import { useCtx } from "../../Ctx";
 import Book from "../../objects/Book";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -7,8 +7,6 @@ import { useMutation } from "react-query";
 import { addBook } from "../../api/common";
 import { SHELF_ID } from "../../constants/BookShelfConstant";
 import Notification from "../notification/Notification";
-import Loading from "../loading/Loading";
-
 
 interface newBookProps {
     visible: boolean;
@@ -20,7 +18,7 @@ const NewBook: FC<newBookProps> = ({ visible, setVisible }) => {
     const { booStorage, updateBookStorage } = useCtx();
     const [shelfNo, setShelfNo] = useState<number>(1);
     const [noOfPages, setNoOfPages] = useState<number>(20);
-    const { username } = useCtx();
+    const { username, setLoading } = useCtx();
 
     const [noti, setNoti] = useState({
         message: '',
@@ -58,13 +56,16 @@ const NewBook: FC<newBookProps> = ({ visible, setVisible }) => {
         }
     }
 
+    useEffect(() => {
+        setLoading(mutation.isLoading);
+    }, [mutation.isLoading])
+
     return (
         <>
             <Notification
                 noti={noti}
                 setNoti={setNoti}
             />
-            <Loading visible={mutation.isLoading} />
             <div
                 onClick={e => { e.stopPropagation(); setVisible(false) }}
                 className={`${visible ? 'block' : 'hidden'} absolute top-0 left-0 w-full h-full flex justify-center items-center bg-black bg-opacity-40`}>

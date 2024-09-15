@@ -8,7 +8,7 @@ const Loading: FC<loadingProps> = ({ visible }) => {
     return (
         <>
             {visible &&
-                <div className="flex items-center justify-center z-50 absolute top-0 right-0 w-full h-full">
+                <div className="flex items-center justify-center z-50 absolute top-0 right-0 w-full h-full border-2 border-red-500">
                     <div className="w-24 h-24 border-4 border-blue-500 border-t-transparent border-solid rounded-full animate-spin">
                     </div>
                 </div>}

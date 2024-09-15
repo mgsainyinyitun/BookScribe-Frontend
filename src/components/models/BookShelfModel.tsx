@@ -23,7 +23,7 @@ const BookShelfModel: FC<bookshelfProps> = ({ currentState, toState, setCurrentS
     const { camera } = useThree();
     const { nodes, materials } = useGLTF(shelf)
     const bookRef = useRef<Group>(null);
-    const { booStorage, updateBookStorage, bookContents } = useCtx();
+    const { booStorage } = useCtx();
 
     bookshelf.setRef(bookRef);
     bookshelf.setCamera(camera as PerspectiveCamera);
@@ -62,28 +62,6 @@ const BookShelfModel: FC<bookshelfProps> = ({ currentState, toState, setCurrentS
         return isCamMoved;
     }
 
-    useEffect(() => {
-        // console.log(bookContents);
-
-        // const args = bookContents.map(ctx => {
-        //     const book = new Book(ctx.numberOfpage, ctx.text);
-        //     book.setBookId(ctx.id);
-        //     if (SHELF_ID[ctx.shelf]) {
-        //         book.setShelfId(parseInt(SHELF_ID[ctx.shelf]));
-        //     } else {
-        //         book.setShelfId(SHELF_ID.SHELF_UPPER);
-        //     }
-        //     return book;
-        // })
-        // // const args = [new Book(20),new Book(10)]
-        // updateBookStorage(args);
-
-        bookRender(bookContents);
-      
-
-    }, [bookContents])
-
-
     useFrame(() => {
         if (currentState !== toState) {
             if (setCameraToOrigin()) return;
@@ -96,23 +74,6 @@ const BookShelfModel: FC<bookshelfProps> = ({ currentState, toState, setCurrentS
             }
         }
     })
-
-    function bookRender(bookContents: any): Book[] {
-        const books: Book[] = [];
-        bookContents.map((ctx: any) => {
-            const bt = new Book(ctx.numberOfpage, ctx.text);
-            bt.setBookId(ctx.id);
-            if (SHELF_ID[ctx.shelf]) {
-                bt.setShelfId(parseInt(SHELF_ID[ctx.shelf]));
-            } else {
-                bt.setShelfId(SHELF_ID.SHELF_UPPER);
-            }
-            books.push(bt);
-        })
-
-        updateBookStorage([...books,...booStorage]);
-        return books;
-    }
 
     return (
         <group

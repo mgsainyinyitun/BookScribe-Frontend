@@ -7,6 +7,8 @@ import { POSITION } from '../../constants/BookShelfConstant'
 import TextEditorWraper from '../editor/TextEditorWraper'
 import NewBook from '../book/NewBook'
 import UserMgmt from '../user/UserMgmt'
+import Loading from '../loading/Loading'
+import { useCtx } from '../../Ctx'
 const Home: FC = () => {
 
     const [currentState, setCurrentState] = useState<string>(POSITION.BACK_VIEW);
@@ -15,6 +17,8 @@ const Home: FC = () => {
 
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const cameraRef = useRef();
+
+    const { loading } = useCtx();
 
     return (
         <div className='w-full h-screen'>
@@ -45,6 +49,7 @@ const Home: FC = () => {
             <TextEditorWraper setNewBookVisible={setNewBookVisible} />
             <NewBook visible={newBookVisible} setVisible={setNewBookVisible} />
             <UserMgmt />
+            <Loading visible={loading} />
         </div>
     )
 }

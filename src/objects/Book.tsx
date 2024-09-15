@@ -14,6 +14,12 @@ class Book {
     public ctx = [];
     public shelfId: number;
     public bookId: number = -1;
+    public bookType: string = '';
+    public owner: string = '';
+
+    // const frontCover = useLoader(TextureLoader, "/assets/images/front_cover.png");
+    // const backCover = useLoader(TextureLoader, "/assets/images/back_cover.png");
+
 
     constructor(noOfPages: number, text?: any, shelf?: number) {
         this.position = [0, 0, 0];
@@ -27,6 +33,13 @@ class Book {
 
     setBookId(id: number) {
         this.bookId = id;
+    }
+    setOwner(o: string) {
+        this.owner = o;
+    }
+
+    setBookType(ty: string) {
+        this.bookType = ty;
     }
 
     setNoOfPages(noOfPages: number) {

@@ -1,8 +1,8 @@
 import { FC, useEffect, useMemo, useRef, useState } from "react"
 import Page from "../../objects/Page"
-import { Box3, MathUtils, MeshStandardMaterial, SkeletonHelper, SkinnedMesh, Vector3 } from "three";
+import { Box3, MathUtils, MeshStandardMaterial, SkeletonHelper, SkinnedMesh, TextureLoader, Vector3 } from "three";
 import { useHelper } from "@react-three/drei";
-import { useFrame } from "@react-three/fiber";
+import { useFrame, useLoader } from "@react-three/fiber";
 import Book from "../../objects/Book";
 import { degToRad } from "three/src/math/MathUtils.js";
 import { useCtx } from "../../Ctx";
@@ -18,6 +18,13 @@ interface pageProps {
 const PageModel: FC<pageProps> = ({ page, index, book }) => {
     const pageRef = useRef();
     const { focusedBook, focusedFrontPage, focusedBackPage } = useCtx();
+
+    const frontCover = useLoader(TextureLoader, "/assets/images/front_cover.png");
+    const backCover = useLoader(TextureLoader, "/assets/images/back_cover.png");
+
+    const pfrontCover = useLoader(TextureLoader, "/assets/images/front_cover_blue.jpg");
+    const pbackCover = useLoader(TextureLoader, "/assets/images/back_cover_blue.jpg");
+
     page.setPageRef(pageRef);
 
     useFrame(() => {
@@ -54,6 +61,20 @@ const PageModel: FC<pageProps> = ({ page, index, book }) => {
         const box = new Box3().setFromObject(pageRef.current);
         const size = new Vector3();
         box.getSize(size);
+
+        if (page.pageIndex === 0) {
+            if (skinMesh.material) {
+                const fc = book.bookType === 'PUBLIC' ? frontCover : pfrontCover;
+                skinMesh.material = page.updateFrontCoverPage(skinMesh.material as MeshStandardMaterial[], fc)
+            }
+        }
+
+        if (page.pageIndex === page.maxIndex) {
+            if (skinMesh.material) {
+                const bc = book.bookType === 'PUBLIC' ? backCover : pbackCover;
+                skinMesh.material = page.updateBackCoverPage(skinMesh.material as MeshStandardMaterial[], bc)
+            }
+        }
 
     }, [pageRef])
 
