@@ -3,6 +3,7 @@ import Book from './objects/Book';
 import axios from 'axios';
 import Page from './objects/Page';
 import apiWithToken from './api';
+import { getPrivateBooks, validateToken } from './api/common';
 
 interface ctxProps {
     openedPage: number;
@@ -51,26 +52,30 @@ export const CtxProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
 
     const [username, setUsername] = useState<string>('');
 
+    const updateBookContentsFun = (data: any) => {
+        let cx = []
+        for (let key in data) {
+            cx.push(data[key]);
+        }
+        updateBookContents([...bookContents, ...cx]);
+    }
+
+
+    useEffect(() => {
+        if (username.length !== 0) {
+            getPrivateBooks(updateBookContents);
+        }
+    }, [username])
+
+
+
     useEffect(() => {
 
-        apiWithToken.post('/auth/validate')
-            .then(res => {
-                setUsername(res.data);
-            })
-            .catch(err => {
-                console.log(err);
-            });
+        validateToken(setUsername);
 
         axios.get<Book[]>(`${api}/books/public`, { params: {} })
             .then(response => {
-                let data = response.data;
-                let cx = []
-
-                for (let key in data) {
-                    cx.push(data[key]);
-                }
-
-                updateBookContents(cx);
+                updateBookContentsFun(response.data);
             })
             .catch(error => {
                 console.error('Error fetching data:', error);
@@ -92,3 +97,4 @@ export const useCtx = () => {
     }
     return context;
 };
+
