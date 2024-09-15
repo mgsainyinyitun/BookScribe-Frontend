@@ -109,7 +109,8 @@ const BookShelfModel: FC<bookshelfProps> = ({ currentState, toState, setCurrentS
             }
             books.push(bt);
         })
-        updateBookStorage(books);
+
+        updateBookStorage([...books,...booStorage]);
         return books;
     }
 
@@ -137,7 +138,7 @@ const BookShelfModel: FC<bookshelfProps> = ({ currentState, toState, setCurrentS
                     onClickFun={() => setToState(POSITION.UP_SHELF)}
                     currentState={currentState}
                     toState={toState}
-                    books={booStorage.filter(book => book.shelfId === 2).sort((a, b) => a.numberofPages - b.numberofPages)}
+                    books={booStorage.filter(book => book.shelfId === 1).sort((a, b) => a.numberofPages - b.numberofPages)}
                 />
             </mesh>
             <mesh position={[0.21, 0.72, 0]}>

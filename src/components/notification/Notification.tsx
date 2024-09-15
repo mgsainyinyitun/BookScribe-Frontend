@@ -29,8 +29,14 @@ const Notification: FC<notiProps> = ({ noti, setNoti }) => {
     return (
         <div className='fixed top-5 w-full flex justify-center items-cente min-w-60'>
             <div
-                className={`${show ? 'block animate-slideIn' : 'hidden animate-slideOut opacity-0'} z-50 bg-white border rounded-lg shadow-lg p-4 ${typeClasses[type]} border ${typeClasses[type].split(' ')[1]}`}
+                className={`${show ? 'block animate-slideIn' : 'hidden animate-slideOut opacity-0'} group z-50 bg-white border rounded-lg shadow-lg p-4 ${typeClasses[type]} border ${typeClasses[type].split(' ')[1]}`}
             >
+                <div className='flex justify-end'>
+                    <button onClick={() => setNoti({ ...noti, show: false })} className=" text-gray-600 hover:text-gray-800">
+                        <FontAwesomeIcon icon={faClose} />
+                    </button>
+                </div>
+
                 <div className="flex items-start">
                     <svg
                         className={`w-6 h-6 ${type === 'success' ? 'text-green-500' : type === 'error' ? 'text-red-500' : 'text-blue-500'} mr-3`}
@@ -48,9 +54,6 @@ const Notification: FC<notiProps> = ({ noti, setNoti }) => {
                         <p className="text-gray-600">{message}</p>
                     </div>
                 </div>
-                <button onClick={() => setNoti({ ...noti, show: false })} className="absolute top-2 right-2 text-gray-600 hover:text-gray-800">
-                    <FontAwesomeIcon icon={faClose} />
-                </button>
             </div>
         </div>
     );

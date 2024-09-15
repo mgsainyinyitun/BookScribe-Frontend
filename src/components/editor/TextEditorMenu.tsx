@@ -1,9 +1,11 @@
 import { faFloppyDisk, faKeyboard, faPlus, faUpload } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { FC } from 'react'
+import { FC, useState } from 'react'
 import { useCtx } from '../../Ctx'
 import { useMutation } from 'react-query'
 import { addUpdatePages } from '../../api/common'
+import Loading from '../loading/Loading'
+import Notification from '../notification/Notification'
 
 
 interface textEditorProps {
@@ -19,26 +21,44 @@ interface textEditorProps {
 const TextEditorMenu: FC<textEditorProps> = ({ menuVisible, setTextEditorVisible, setNewBookVisible, onChangeSave, isFrontChanged, isBackChanged, textEditorVisible }) => {
 
     const { requestPagesChange, username } = useCtx();
+    const [noti, setNoti] = useState({
+        message: '',
+        type: 'success',
+        show: false,
+    });
+
 
 
     const mutation = useMutation(addUpdatePages, {
         onSuccess: (data) => {
             console.log(data)
+            setNoti({ ...noti, message: `Successfully write ${data.no} pages to your account`, show: true, type: 'error' });
         },
         onError: (err) => {
             console.log(err);
+            setNoti({ ...noti, message: "Something wrong! Please try again", show: true, type: 'error' });
         }
     })
 
     const onPageUpload = () => {
         if (requestPagesChange.length !== 0 && username.length !== 0) {
-            console.log('upload', requestPagesChange);
+
             mutation.mutate(requestPagesChange);
+        } else {
+            if (username.length === 0) {
+                setNoti({ ...noti, message: "You are not login! Please login and try again", show: true, type: 'error' });
+            }
         }
     }
 
     return (
         <>
+
+            <Notification
+                noti={noti}
+                setNoti={setNoti}
+            />
+            <Loading visible={mutation.isLoading} />
             {
                 menuVisible && (<>
                     <div className={` ${menuVisible ? 'animate-slideIn' : 'animate-slideOut opacity-0'} flex flex-col items-end gap-2`}>

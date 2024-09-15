@@ -70,7 +70,7 @@ const Controls: FC<controlProps> = ({ controlBtnClick, currentState }) => {
                 <button
                     onClick={() => { controlBtnClick(POSITION.BACK_VIEW); setFocusBook(null) }}
                     className={`w-12 h-12 bg-blue-500 text-white rounded-full flex items-center justify-center shadow-lg hover:bg-blue-600 ${currentState === POSITION.BACK_VIEW ? 'bg-violet-500' : ''}`}>
-                    <FontAwesomeIcon icon={faHome}/>
+                    <FontAwesomeIcon icon={faHome} />
                 </button>
             </div>
         </>

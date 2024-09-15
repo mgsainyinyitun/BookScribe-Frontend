@@ -42,7 +42,7 @@ export const CtxProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
     const [focusedFrontPage, setFocusFrontPage] = useState<Page | null>(null);
     const [focusedBackPage, setFocusBackPage] = useState<Page | null>(null);
 
-    const [booStorage, updateBookStorage] = useState<Book[]>([new Book(10, [], 3)]); // new Book(10,["temp page"],3)
+    const [booStorage, updateBookStorage] = useState<Book[]>([new Book(10, [])]); // new Book(10,["temp page"],3)
     const [bookContents, updateBookContents] = useState<any>([]);
 
     const [requestPagesChange, setRequestPagesChange] = useState<any[]>([]);

@@ -10,7 +10,6 @@ interface textEditorProps {
     setNewBookVisible: (cond: boolean) => void;
 }
 
-
 const TextEditorWraper: FC<textEditorProps> = ({ setNewBookVisible }) => {
 
     const [menuVisible, setMenuVisible] = useState(false);
@@ -122,11 +121,16 @@ const TextEditorWraper: FC<textEditorProps> = ({ setNewBookVisible }) => {
                 setNoti={setNoti}
             />
             <div className='absolute top-0 right-0 w-[50%] flex justify-center items-end pr-5 pt-5 z-50 flex-col gap-2'>
-                <button
-                    onClick={() => setMenuVisible(!menuVisible)}
-                    className={`w-12 h-12 bg-blue-500 text-white rounded-full flex items-center justify-center shadow-lg hover:bg-blue-600 focus:outline-none'}`}>
-                    {menuVisible ? <FontAwesomeIcon icon={faXmark} /> : <FontAwesomeIcon icon={faList} />}
-                </button>
+                <div className='relative group'>
+                    <button
+                        onClick={() => setMenuVisible(!menuVisible)}
+                        className={`w-12 h-12 bg-blue-500 text-white rounded-full flex items-center justify-center shadow-lg hover:bg-blue-600 focus:outline-none'}`}>
+                        {menuVisible ? <FontAwesomeIcon icon={faXmark} /> : <FontAwesomeIcon icon={faList} />}
+                    </button>
+                    <div className="absolute top-0 min-w-36 right-14 bg-gray-800 text-white text-sm px-2 py-1 rounded-md shadow-md hidden group-hover:block">
+                       Book management Menu.
+                    </div>
+                </div>
 
                 <TextEditorMenu
                     menuVisible={menuVisible}
