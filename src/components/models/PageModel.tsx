@@ -1,7 +1,7 @@
-import { FC, useEffect, useMemo, useRef, useState } from "react"
+import { FC, useEffect, useMemo, useRef } from "react"
 import Page from "../../objects/Page"
-import { Box3, MathUtils, MeshStandardMaterial, SkeletonHelper, SkinnedMesh, TextureLoader, Vector3 } from "three";
-import { useHelper } from "@react-three/drei";
+import { Box3, MathUtils, MeshStandardMaterial, TextureLoader, Vector3 } from "three";
+// import { useHelper } from "@react-three/drei";
 import { useFrame, useLoader } from "@react-three/fiber";
 import Book from "../../objects/Book";
 import { degToRad } from "three/src/math/MathUtils.js";

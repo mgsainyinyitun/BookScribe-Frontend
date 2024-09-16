@@ -1,4 +1,4 @@
-import { faList, faRotate, faRotateRight, faSpinner, faXmark } from '@fortawesome/free-solid-svg-icons';
+import { faList,faXmark } from '@fortawesome/free-solid-svg-icons';
 
 import { FC, useEffect, useState } from 'react'
 import { useCtx } from '../../Ctx';

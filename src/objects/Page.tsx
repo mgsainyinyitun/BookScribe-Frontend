@@ -1,4 +1,4 @@
-import { Bone, BoxGeometry, CanvasTexture, Float32BufferAttribute, MeshStandardMaterial, Skeleton, SkinnedMesh, TextureLoader, Uint16BufferAttribute, Vector3 } from "three";
+import { Bone, BoxGeometry, CanvasTexture, Float32BufferAttribute, MeshStandardMaterial, Skeleton, SkinnedMesh, Uint16BufferAttribute, Vector3 } from "three";
 import { PAGE_STATE } from "../constants/PageConstant";
 import Book from "./Book";
 import { BOOK_STATE } from "../constants/BookConstant";

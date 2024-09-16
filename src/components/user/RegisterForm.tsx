@@ -1,4 +1,4 @@
-import { faClose, faUserLarge } from '@fortawesome/free-solid-svg-icons';
+import { faClose } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { FC, useState } from 'react'
 import Notification from '../notification/Notification';

@@ -1,6 +1,3 @@
-
-
-
 import { Text } from '@react-three/drei'
 import { FC } from 'react'
 import Page from '../../objects/Page'

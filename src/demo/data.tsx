@@ -1,6 +1,3 @@
-
-
-
 export const books: any =
 {
     1: [

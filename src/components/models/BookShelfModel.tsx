@@ -1,10 +1,10 @@
-import { FC, useEffect, useRef } from 'react'
+import { FC, useRef } from 'react'
 import { useGLTF } from '@react-three/drei'
 import shelf from '/assets/3d/book_shelf.glb';
 import BookShelf from '../../objects/BookShelf';
 import { useFrame, useThree } from '@react-three/fiber';
 import { Group, PerspectiveCamera } from 'three';
-import { POSITION, SHELF_ID } from '../../constants/BookShelfConstant';
+import { POSITION } from '../../constants/BookShelfConstant';
 import StorageModel from './StorageModel';
 import { useCtx } from '../../Ctx';
 
