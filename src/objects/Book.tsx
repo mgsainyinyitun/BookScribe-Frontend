@@ -123,7 +123,7 @@ class Book {
             isMoved = true;
         }
         // camera.position.z
-        if (this.bookRef.current.position.x >= -1 * (1 - 0.68)) { //camera.position.z
+        if (this.bookRef.current.position.x >= -1 * (camera.position.z - 0.68)) { //camera.position.z
             this.bookRef.current.position.x -= 0.01;
             isMoved = true;
         }
