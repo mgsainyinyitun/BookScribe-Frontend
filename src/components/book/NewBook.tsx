@@ -40,6 +40,7 @@ const NewBook: FC<newBookProps> = ({ visible, setVisible }) => {
         }
     });
 
+
     const addBookSubmit = (e: any) => {
         e.preventDefault();
         const dt = {
@@ -66,21 +67,22 @@ const NewBook: FC<newBookProps> = ({ visible, setVisible }) => {
                 noti={noti}
                 setNoti={setNoti}
             />
-            <div
+            {visible && <div
                 onClick={e => { e.stopPropagation(); setVisible(false) }}
-                className={`${visible ? 'block' : 'hidden'} absolute top-0 left-0 w-full h-full flex justify-center items-center bg-black bg-opacity-40`}>
+                className={`absolute top-0 left-0 w-full h-full flex justify-center items-center bg-black bg-opacity-40 flex-col`}>
 
+                {username?.length === 0 && <div className="animate-slideIn rounded-lg p-3 text-black bg-yellow-200 m-3 flex justify-center items-center">
+                    <FontAwesomeIcon icon={faTriangleExclamation} className="text-yellow-600 mr-3" />
+                    You are not sign-in and the new book will not be saved!
+                </div>}
                 <form onClick={e => e.stopPropagation()} onSubmit={addBookSubmit} className="bg-white w-[30%] p-10 rounded-3xl animate-slideIn">
 
                     <div className='flex justify-end mr-3'>
-                        <FontAwesomeIcon icon={faClose} className='text-red-700 font-bold text-2xl' onClick={() => setVisible(false)} />
+                        <FontAwesomeIcon icon={faClose}
+                            className='text-red-500 font-bold text-2xl hover:text-red-900'
+                            onClick={e => { e.stopPropagation(); setVisible(false) }}
+                        />
                     </div>
-
-
-                    {username.length === 0 && <div className="rounded-lg p-3 text-black bg-yellow-200 m-3 flex justify-center items-center">
-                        <FontAwesomeIcon icon={faTriangleExclamation} className="text-yellow-600 mr-3" />
-                        You are not sign-in and the new book will not be saved!
-                    </div>}
 
                     <div className='flex flex-col justify-center items-center gap-3 mb-5'>
                         <h1 className='text-gray-700 text-2xl'>Add New Book</h1>
@@ -122,8 +124,9 @@ const NewBook: FC<newBookProps> = ({ visible, setVisible }) => {
                     >
                         CREATE
                     </button>
+
                 </form>
-            </div>
+            </div>}
         </>
     )
 }

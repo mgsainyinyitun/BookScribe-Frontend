@@ -56,7 +56,7 @@ const Controls: FC<controlProps> = ({ controlBtnClick, currentState }) => {
                         {POSITION.CENTET_SHELF}
                     </button>
                     <div className="absolute -top-14 min-w-36 -right-8 bg-gray-800 text-white text-sm px-2 py-1 rounded-md shadow-md hidden group-hover:block">
-                        Got to home highest shelf
+                        Got to highest shelf
                     </div>
                 </div>
 
@@ -67,7 +67,7 @@ const Controls: FC<controlProps> = ({ controlBtnClick, currentState }) => {
                         {POSITION.UP_SHELF}
                     </button>
                     <div className="absolute -top-14 min-w-36 -right-8 bg-gray-800 text-white text-sm px-2 py-1 rounded-md shadow-md hidden group-hover:block">
-                        Got to home center shelf
+                        Got to center shelf
                     </div>
                 </div>
 
@@ -78,7 +78,7 @@ const Controls: FC<controlProps> = ({ controlBtnClick, currentState }) => {
                         {POSITION.LOW_SHELF}
                     </button>
                     <div className="absolute -top-14 min-w-36 -right-8 bg-gray-800 text-white text-sm px-2 py-1 rounded-md shadow-md hidden group-hover:block">
-                        Got to home lowest shelf
+                        Got to lowest shelf
                     </div>
                 </div>
 

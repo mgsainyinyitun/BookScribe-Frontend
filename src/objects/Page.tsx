@@ -94,11 +94,11 @@ class Page {
             new MeshStandardMaterial({ color: '#D2b48c' }),
             new MeshStandardMaterial({
                 color: this.pageIndex === 0 ? '' : '#D2b48c',
-                map: this.pageIndex === 0 ? this.frontCover : null,
+                map: this.pageIndex === 0 ? this.frontCover ? this.frontCover : null : null,
             }),
             new MeshStandardMaterial({
                 color: this.pageIndex === this.maxIndex ? '' : '#D2b48c',
-                map: this.pageIndex === this.maxIndex ? this.backCover : null
+                map: this.pageIndex === this.maxIndex ? this.backCover ? this.backCover : null : null
             }),
         ];
         return materials;

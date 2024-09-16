@@ -15,7 +15,7 @@ const Notification: FC<notiProps> = ({ noti, setNoti }) => {
     useEffect(() => {
         const timer = setTimeout(() => {
             onClose();
-        }, 10000);
+        }, 5000);
 
         return () => clearTimeout(timer); // Cleanup the timer on unmount
     }, [noti]);
@@ -29,15 +29,15 @@ const Notification: FC<notiProps> = ({ noti, setNoti }) => {
     return (
         <div className='fixed top-5 w-full flex justify-center items-cente min-w-60'>
             <div
-                className={`${show ? 'block animate-slideIn' : 'hidden animate-slideOut opacity-0'} group z-50 bg-white border rounded-lg shadow-lg p-4 ${typeClasses[type]} border ${typeClasses[type].split(' ')[1]}`}
+                className={`${show ? 'block animate-slideIn' : 'hidden animate-slideOut opacity-0'} group z-50 bg-white border rounded-lg shadow-lg  ${typeClasses[type]} border ${typeClasses[type].split(' ')[1]}`}
             >
-                <div className='flex justify-end'>
+                <div className='flex justify-end pr-1 pt-1'>
                     <button onClick={() => setNoti({ ...noti, show: false })} className=" text-gray-600 hover:text-gray-800">
                         <FontAwesomeIcon icon={faClose} />
                     </button>
                 </div>
 
-                <div className="flex items-start">
+                <div className="flex items-start mx-4 mb-4">
                     <svg
                         className={`w-6 h-6 ${type === 'success' ? 'text-green-500' : type === 'error' ? 'text-red-500' : 'text-blue-500'} mr-3`}
                         fill="none"
