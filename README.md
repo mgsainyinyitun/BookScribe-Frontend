@@ -12,3 +12,6 @@ Backend REST Github (Spring Boot)
 - https://github.com/mgsainyinyitun/BookScribe-api
 
 ![Home Page](https://github.com/user-attachments/assets/1a62d5dc-8cb0-4b3b-bca9-3dd71e93497c)
+
+![image](https://github.com/user-attachments/assets/30982a4e-7a06-4333-ba48-36c9988111e8)
+
